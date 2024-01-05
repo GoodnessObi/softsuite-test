@@ -1,0 +1,14 @@
+@use 'variables' as var;
+
+:root {
+	font-family: var.$font-primary;
+	line-height: 1.5;
+	font-weight: 400;
+	color: var.$color-primary;
+	background-color: var.$white;
+	font-synthesis: none;
+	text-rendering: optimizeLegibility;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+	-webkit-text-size-adjust: 100%;
+}
