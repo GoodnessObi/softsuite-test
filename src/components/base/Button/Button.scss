@@ -1,0 +1,25 @@
+@use '../../../styles/variables' as var;
+@import '../../../styles/breakpoints';
+
+.btn {
+	padding-top: 16px;
+	padding-bottom: 16px;
+	display: flex;
+	gap: 14px;
+	align-items: center;
+	border-radius: 4px;
+	font-size: 16px;
+	font-style: normal;
+	font-weight: 700;
+	line-height: 16px; /* 100% */
+
+	&.default {
+		background-color: var.$color-secondary;
+		border: 0;
+		color: var.$white;
+	}
+
+	&.secondary {
+		background-color: var.$color-primary;
+	}
+}

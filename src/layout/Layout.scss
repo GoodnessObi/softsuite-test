@@ -8,7 +8,8 @@
 		background-color: var.$color-background;
 		width: 100%;
 		margin-top: var.$navbar-height-mobile;
-		padding-top: 10px;
+		padding-top: 30px;
+		overflow-y: auto;
 		// padding: 30px 20px;
 		min-height: calc(100vh - var.$navbar-height-mobile);
 

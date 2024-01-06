@@ -34,8 +34,8 @@ export default function TopNav({ toggleNav, navIsOpen }: NavbarProps) {
 					</Dropdown>
 				</div>
 
-				<div className='navbar__search'>
-					<div className='navbar__search-group'>
+				<div className='search'>
+					<div className='search-group'>
 						<input
 							type='search'
 							className='form-input'
