@@ -1,31 +1,54 @@
-import { useState } from 'react';
 import ReactPaginate from 'react-paginate';
 import './Pagination.scss';
 
-export default function Pagination() {
-	// const [currentUsers, setCurrentUsers] = useState<User[]>([]);
-	const [pageCount, setPageCount] = useState(0);
-	// const [itemOffset, setItemOffset] = useState(0);
-	// const [itemsPerPage, setItemsPerPage] = useState(10);
-
-	// useEffect(() => {
-	// 	const endOffset = itemOffset + itemsPerPage;
-	// 	setCurrentUsers(users.slice(itemOffset, endOffset));
-	// 	setPageCount(Math.ceil(users.length / itemsPerPage));
-	// }, [itemOffset, itemsPerPage, users]);
-
-	const handlePageClick = () => {
+export default function Pagination({
+	pageCount,
+	totalCount,
+	handlePageChange,
+	itemsPerPage,
+	setItemsPerPage,
+}: {
+	pageCount: number;
+	totalCount: number;
+	itemsPerPage: number;
+	setItemsPerPage: React.Dispatch<React.SetStateAction<number>>;
+	handlePageChange: (event: any) => void;
+}) {
+	const handlePageClick = (event: any) => {
 		console.log('clickkkk');
+		handlePageChange(event.selected);
 		// const newOffset = (event.selected * itemsPerPage) % users.length;
 		// setItemOffset(newOffset);
 	};
 
-	// const selectPageCount = (e: React.ChangeEvent<HTMLSelectElement>) => {
-	// 	setItemsPerPage(+e.currentTarget.value);
-	// };
+	const selectPageCount = (e: React.ChangeEvent<HTMLSelectElement>) => {
+		setItemsPerPage(+e.currentTarget.value);
+	};
 
 	return (
 		<div className='pagination_wrapper'>
+			<div className='select-box'>
+				<span>
+					Showing out
+					<span>
+						<label htmlFor='pageitems' hidden></label>
+						<select
+							className='pageitems'
+							name='page Items'
+							id='pageitems'
+							onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
+								selectPageCount(e)
+							}
+						>
+							<option value={itemsPerPage}>{itemsPerPage}</option>
+							<option value='20'>10</option>
+							<option value='50'>20</option>
+							<option value='100'>50</option>
+						</select>
+					</span>
+					out of {totalCount}
+				</span>
+			</div>
 			<ReactPaginate
 				nextLabel='>'
 				onPageChange={handlePageClick}
