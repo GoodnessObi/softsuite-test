@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
-import Icons from '../../../assets/images';
-import Pagination from '../../../components/base/Pagination/Pagination';
-import { Element } from '../../../types/apiResponseTypes';
+import Icons from '../../../../assets/images';
+import Pagination from '../../../../components/base/Pagination/Pagination';
+import { Element } from '../../../../types/apiResponseTypes';
 import './ElementsTable.scss';
 
 export default function ElementsTable({ data }: { data: Element[] }) {

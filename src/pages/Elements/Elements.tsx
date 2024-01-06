@@ -4,7 +4,8 @@ import Button from '../../components/base/Button/Button';
 import CenterModal from '../../components/base/Modal/CenterModal/CenterModal';
 import { Element } from '../../types/apiResponseTypes';
 import './Elements.scss';
-import ElementsTable from './components/ElementsTable';
+import ElementsTable from './components/ElementsTable/ElementsTable';
+import ELementsForm from './components/ElementsForm';
 
 export default function Elements() {
 	const [isModalOpen, setIsModalOpen] = useState(false);
@@ -48,7 +49,7 @@ export default function Elements() {
 
 			{isModalOpen && (
 				<CenterModal>
-					<p>Modallaaaaaa</p>
+					<ELementsForm />
 				</CenterModal>
 			)}
 		</div>
