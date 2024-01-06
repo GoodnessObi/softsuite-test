@@ -1,10 +1,14 @@
+import { useState } from 'react';
 import Icons from '../../assets/images';
 import Button from '../../components/base/Button/Button';
+import CenterModal from '../../components/base/Modal/CenterModal/CenterModal';
 import { Element } from '../../types/apiResponseTypes';
 import './Elements.scss';
 import ElementsTable from './components/ElementsTable';
 
 export default function Elements() {
+	const [isModalOpen, setIsModalOpen] = useState(false);
+
 	return (
 		<div className='elements'>
 			<div className='elements__header'>
@@ -30,7 +34,10 @@ export default function Elements() {
 						</Button>
 					</div>
 
-					<Button styleProp={{ padding: '16px' }}>
+					<Button
+						styleProp={{ padding: '16px' }}
+						onClick={() => setIsModalOpen(true)}
+					>
 						Create Element
 						<img src={Icons['Plus']} alt='' />
 					</Button>
@@ -38,6 +45,12 @@ export default function Elements() {
 			</div>
 
 			<ElementsTable data={elements} />
+
+			{isModalOpen && (
+				<CenterModal>
+					<p>Modallaaaaaa</p>
+				</CenterModal>
+			)}
 		</div>
 	);
 }
