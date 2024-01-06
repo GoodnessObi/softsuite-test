@@ -1,0 +1,83 @@
+@use '../../../styles/variables' as var;
+@import '../../../styles/breakpoints';
+
+.sidenav {
+	position: fixed;
+	box-shadow: var.$shadow-2;
+	padding: 16px;
+	transform: translateX(-450px);
+	background-color: #fff;
+	height: calc(100vh - var.$navbar-height-mobile);
+	top: var.$navbar-height-mobile;
+	overflow-y: scroll;
+	transition-property: all;
+	transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+	transition-duration: 150ms;
+	&::-webkit-scrollbar {
+		width: 2px;
+	}
+	&::-webkit-scrollbar-track {
+		background: #f1f1f1;
+	}
+	&::-webkit-scrollbar-thumb {
+		background: var.$color-secondary;
+	}
+	&::-webkit-scrollbar-thumb:hover {
+		background: var.$color-primary;
+	}
+	// &::-webkit-scrollbar {
+	// 	display: none;
+	// }
+
+	@include md-breakpoint {
+		transform: translateX(0);
+		width: var.$sidenav-width;
+		max-width: var.$sidenav-width;
+		top: var.$navbar-height-web;
+		height: calc(100vh - var.$navbar-height-web);
+	}
+
+	&.open {
+		transform: translateX(0);
+		z-index: 100;
+		width: 100%;
+		max-width: 450px;
+
+		@include md-breakpoint {
+			max-width: var.$sidenav-width;
+		}
+	}
+
+	&__top {
+		margin-bottom: 32px;
+	}
+
+	&__navSection {
+		padding-bottom: 20px;
+	}
+
+	&__heading {
+		font-weight: 500;
+		font-size: 12px;
+		line-height: 14px;
+		text-transform: uppercase;
+		color: #545f7d;
+		padding-left: 30px;
+	}
+
+	&__linklist {
+		padding: 0;
+	}
+
+	&__linkitem {
+		font-weight: 400;
+		font-size: 16px;
+		line-height: 19px;
+		color: var.$color-primary;
+	}
+
+	hr {
+		margin: 40px 0;
+		border: 1px solid rgba(150, 160, 183, 0.1);
+	}
+}
