@@ -1,0 +1,39 @@
+@use '../../../../styles/variables' as var;
+@import '../../../../styles/breakpoints';
+
+.dropdown {
+	display: inline-block;
+	position: relative;
+
+	&__btn {
+		background: inherit;
+		display: flex;
+		align-items: center;
+		border: none;
+
+		span {
+			display: inline-flex;
+			align-items: center;
+		}
+	}
+
+	&__list {
+		display: none;
+		position: absolute;
+		background-color: var.$white;
+		width: 100%;
+		overflow: hidden;
+	}
+
+	&:hover {
+		.dropdown {
+			&__btn .icon {
+				transform: rotate(180deg);
+			}
+
+			&__list {
+				display: block;
+			}
+		}
+	}
+}

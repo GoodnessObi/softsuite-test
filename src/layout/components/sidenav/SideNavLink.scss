@@ -1,0 +1,69 @@
+@use '../../../styles/variables' as var;
+@import '../../../styles/breakpoints';
+
+.navlink,
+.navlink__btn {
+	color: var.$color-primary-40;
+	background-color: inherit;
+	border: 0;
+	text-decoration: none;
+	padding: 16px 10px 10px;
+	display: block;
+	width: 100%;
+	font-weight: 400;
+	font-size: 16px;
+	line-height: 19px;
+	display: flex;
+	align-items: center;
+	gap: 22px;
+	margin: 25px 0;
+
+	&__btn {
+		display: flex;
+		justify-content: space-between;
+
+		span {
+			display: flex;
+			gap: 22px;
+		}
+	}
+
+	&__icon {
+		color: red;
+	}
+
+	&.active {
+		background-color: var.$color-secondary;
+		color: var.$white;
+	}
+}
+
+.navDropdown {
+	display: none;
+}
+
+.navlink-dropdown.active {
+	.navlink__btn {
+		background-color: var.$color-secondary;
+		color: var.$white;
+		margin-bottom: 10px;
+
+		.arrow-icon {
+			transform: rotate(180deg);
+		}
+	}
+
+	.navDropdown {
+		display: block;
+		padding: 0;
+
+		.navlink {
+			color: var.$color-primary;
+			margin: 0;
+
+			&.active {
+				background-color: var.$color-secondary-40;
+			}
+		}
+	}
+}

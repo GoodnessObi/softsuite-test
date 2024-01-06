@@ -1,0 +1,146 @@
+@use '../../../styles/variables' as var;
+@import '../../../styles/breakpoints';
+
+.navbar {
+	position: fixed;
+	box-shadow: var.$shadow-1;
+	padding: 20px 16px;
+	min-height: var.$navbar-height-mobile;
+	width: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	top: 0;
+	background-color: #fff;
+	z-index: 150;
+
+	@include md-breakpoint {
+		min-height: var.$navbar-height-web;
+	}
+
+	&__logo {
+		@include md-breakpoint {
+			min-width: var.$sidenav-width;
+		}
+	}
+
+	&__items {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+
+		@include sm-breakpoint {
+			width: 70%;
+			margin-left: 30px;
+		}
+
+		@include md-breakpoint {
+			width: 100%;
+			margin-left: 60px;
+		}
+	}
+
+	&__search {
+		display: none;
+		@include sm-breakpoint {
+			display: block;
+			width: 60%;
+		}
+
+		&-group {
+			display: flex;
+			max-width: 400px;
+			height: 40px;
+
+			.form-input {
+				border: 1px solid rgba(33, 63, 125, 0.2);
+				border-radius: 8px 0 0 8px;
+				width: 100%;
+				height: 100%;
+				padding-left: 20px;
+
+				&::placeholder {
+					color: rgba(33, 63, 125, 0.7);
+					font-size: 14px;
+					line-height: 16px;
+				}
+			}
+
+			.icon {
+				background-color: var.$color-secondary;
+				display: flex;
+				align-items: center;
+				padding: 0 13px;
+				border-radius: 0 8px 8px 0;
+			}
+		}
+	}
+
+	&__actions {
+		display: none;
+
+		@include md-breakpoint {
+			min-width: 30%;
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			margin-right: 10px;
+
+			.docs-link {
+				font-family: 'Roboto';
+				font-style: normal;
+				font-weight: 400;
+				font-size: 16px;
+				line-height: 19px;
+				color: inherit;
+				text-decoration-line: underline;
+			}
+
+			.notification {
+				margin: 0 10px;
+			}
+
+			.current-user {
+				display: flex;
+				align-items: center;
+
+				img {
+					height: 48px;
+					width: 48px;
+					border-radius: 50%;
+					object-fit: cover;
+				}
+
+				.username {
+					margin: 0 10px;
+					font-weight: 500;
+					font-size: 16px;
+					line-height: 19px;
+				}
+			}
+		}
+
+		&--mobile {
+			@include md-breakpoint {
+				display: none;
+			}
+
+			img {
+				color: var.$color-primary;
+			}
+
+			&:focus {
+				animation: spin 1s linear infinite;
+
+				@keyframes spin {
+					from {
+						transform: rotate(0deg);
+					}
+					to {
+						transform: rotate(360deg);
+					}
+				}
+			}
+		}
+	}
+}
