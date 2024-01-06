@@ -1,11 +1,11 @@
-@use '../../styles/variables' as var;
-@import '../../styles/breakpoints';
+@use '../styles/variables' as var;
+@import '../styles/breakpoints';
 
 .layout {
 	min-height: 100vh;
 
 	&__body {
-		background-color: red;
+		background-color: #f6f7f9;
 		width: 100%;
 		margin-top: var.$navbar-height-mobile;
 		padding: 30px 20px;
@@ -34,7 +34,7 @@
 					font-style: normal;
 					font-weight: 400;
 					font-size: 16px;
-					color: var.$color-primary-alt;
+					color: var.$color-primary;
 					margin-left: 14px;
 				}
 			}
