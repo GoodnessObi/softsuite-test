@@ -1,0 +1,24 @@
+@use '../../styles/variables' as var;
+@import '../../styles/breakpoints';
+
+.elements {
+	margin: 44px 95px 44px 44px;
+	background-color: var.$white;
+	padding: 24px;
+
+	&__action {
+		background-color: var.$color-background;
+	}
+
+	&__header {
+		margin-bottom: 24px;
+	}
+}
+
+.page-title {
+	color: var.$color-primary;
+	font-size: 19px;
+	font-style: normal;
+	font-weight: 700;
+	line-height: normal;
+}
