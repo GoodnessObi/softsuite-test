@@ -1,4 +1,5 @@
 export type Element = {
+	id: string;
 	name: string;
 	description: string;
 	payRunId: number;
@@ -16,9 +17,13 @@ export type Element = {
 	selectedMonths: string[];
 	payFrequency: string;
 	modifiedBy?: string;
+	createdAt?: string;
 };
 
+export type FormElementType = Omit<Element, 'id' | 'createdAt'>;
+
 export type ElementLink = {
+	id: string;
 	name: string;
 	elementId: number;
 	suborganizationId: number;
