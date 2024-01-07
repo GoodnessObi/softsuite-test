@@ -49,7 +49,27 @@ export default function Elements() {
 
 			{isModalOpen && (
 				<CenterModal>
-					<ELementsForm />
+					<ELementsForm
+						setIsModalOpen={setIsModalOpen}
+						element={{
+							name: 'Element1',
+							description: 'Description for Element1',
+							payRunId: 1,
+							payRunValueId: 101,
+							classificationId: 201,
+							classificationValueId: 301,
+							categoryId: 401,
+							categoryValueId: 501,
+							reportingName: '1',
+							processingType: '2',
+							status: 'Active',
+							prorate: '1',
+							effectiveStartDate: '2024-01-01',
+							effectiveEndDate: '2024-12-31',
+							selectedMonths: ['January', 'February', 'March'],
+							payFrequency: 'Monthly',
+						}}
+					/>
 				</CenterModal>
 			)}
 		</div>
