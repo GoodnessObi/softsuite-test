@@ -1,9 +1,8 @@
 interface CheckboxProps {
 	label: string;
-	value: string;
-	onChange: (arg: boolean) => void;
+	value?: string;
+	onChange?: (arg: boolean) => void;
 	register: Record<string, string | any>;
-	required: boolean;
 	id: string;
 }
 

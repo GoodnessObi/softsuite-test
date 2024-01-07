@@ -3,24 +3,37 @@ import Icons from '../../../../assets/images';
 import Pagination from '../../../../components/base/Pagination/Pagination';
 import { Element } from '../../../../types/apiResponseTypes';
 import './ElementsTable.scss';
+import moment from 'moment';
+import DropdownBtn from '../../../../components/base/DropdownBtn/DropdownBtn';
 
-export default function ElementsTable({ data }: { data: Element[] }) {
+export default function ElementsTable({
+	data,
+	setIsModalOpen,
+}: {
+	data?: Element[];
+	setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
+}) {
 	const [items, setCurrentItems] = useState<Element[]>();
 	const [itemOffset, setItemOffset] = useState(0);
 	const [pageCount, setPageCount] = useState(0);
 	const [itemsPerPage, setItemsPerPage] = useState(5);
 
 	useEffect(() => {
-		const endOffset = itemOffset + itemsPerPage;
-		setCurrentItems(data.slice(itemOffset, endOffset));
-		setPageCount(Math.ceil(data.length / itemsPerPage));
+		if (data) {
+			const endOffset = itemOffset + itemsPerPage;
+			setCurrentItems(data?.slice(itemOffset, endOffset));
+			setPageCount(Math.ceil(data?.length / itemsPerPage));
+		}
 	}, [itemOffset, itemsPerPage, data]);
 
 	const handlePageChange = (selected: number) => {
-		const newOffset = (selected * itemsPerPage) % data.length;
-		setItemOffset(newOffset);
+		if (data) {
+			const newOffset = (selected * itemsPerPage) % data?.length;
+			setItemOffset(newOffset);
+		}
 	};
 
+	console.log('ttttt', data);
 	return (
 		<div className='elements-table'>
 			<div className='mobile-header'>
@@ -74,7 +87,7 @@ export default function ElementsTable({ data }: { data: Element[] }) {
 				</thead>
 				<tbody>
 					{items?.map((item) => (
-						<tr key={item.payRunId}>
+						<tr key={item.id}>
 							<td data-name='name' className='itemname'>
 								{/* <Link to={`/items/${item.id}`}> */}
 								{item.name}
@@ -87,11 +100,13 @@ export default function ElementsTable({ data }: { data: Element[] }) {
 									{item.status}
 								</span>
 							</td>
-							<td className='date'>{item.effectiveEndDate}</td>
-							<td data-name='organization'>{item.effectiveStartDate}</td>
+							<td className='date'>
+								{moment(item?.createdAt).format('MMMM Do YYYY, h:mm:ss a')}
+							</td>
+							<td data-name='organization'>{item.modifiedBy}</td>
 
 							<td data-name='action' className='action'>
-								{/* <DropdownBtn id={item.id} status={item.status} /> */}
+								<DropdownBtn item={item} setIsModalOpen={setIsModalOpen} />
 							</td>
 						</tr>
 					))}
@@ -99,7 +114,7 @@ export default function ElementsTable({ data }: { data: Element[] }) {
 			</table>
 
 			<Pagination
-				totalCount={data.length}
+				totalCount={data?.length ?? 0}
 				pageCount={pageCount}
 				handlePageChange={handlePageChange}
 				itemsPerPage={itemsPerPage}

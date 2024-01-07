@@ -9,20 +9,21 @@ import {
 } from '../../../../components/base/Form';
 import Button from '../../../../components/base/Button/Button';
 import { formSteps, monthOptions } from '../../../../lib/data';
-import { Element } from '../../../../types/apiResponseTypes';
+import { FormElementType } from '../../../../types/apiResponseTypes';
 import { useEffect } from 'react';
+import moment from 'moment';
 
 type AdditonalDetailsProps = {
 	setFormStep: React.Dispatch<React.SetStateAction<string>>;
 	submitForm: (e: Event) => Promise<void>;
-	setSubmitData: React.Dispatch<React.SetStateAction<Element>>;
-	values: Element;
+	setFormData: React.Dispatch<React.SetStateAction<FormElementType>>;
+	values: FormElementType;
 };
 
 export default function AdditonalDetails({
 	setFormStep,
 	submitForm,
-	setSubmitData,
+	setFormData,
 	values,
 }: AdditonalDetailsProps) {
 	const schema = yup.object({
@@ -64,8 +65,11 @@ export default function AdditonalDetails({
 		setValue('processingType', processingType);
 		setValue('status', status);
 		setValue('prorate', prorate);
-		setValue('effectiveStartDate', effectiveStartDate);
-		setValue('effectiveEndDate', effectiveEndDate);
+		setValue(
+			'effectiveStartDate',
+			moment(effectiveStartDate).format('yyyy-MM-dd')
+		);
+		setValue('effectiveEndDate', moment(effectiveEndDate).format('yyyy-MM-dd'));
 		setValue('selectedMonths', selectedMonths);
 		setValue('payFrequency', payFrequency);
 		// eslint-disable-next-line
@@ -73,7 +77,7 @@ export default function AdditonalDetails({
 
 	const submit = async (data: any, e: any) => {
 		console.log(data);
-		setSubmitData((prev) => ({ ...prev, ...data }));
+		setFormData((prev) => ({ ...prev, ...data }));
 		await submitForm(e);
 	};
 
@@ -164,7 +168,6 @@ export default function AdditonalDetails({
 							<ToggleButton
 								label='Status'
 								id='status'
-								value={status === '' ? false : true}
 								register={{ ...register('status') }}
 							/>
 						</div>

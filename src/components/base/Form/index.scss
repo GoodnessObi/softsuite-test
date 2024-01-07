@@ -40,3 +40,79 @@
 		left: 0;
 	}
 }
+
+input[type='date'],
+input[type='text'],
+input[type='number'],
+select {
+	height: 56px;
+	width: 100%;
+	border: 1px #dadada solid;
+	border-radius: 4px;
+	padding: 16px;
+	color: #818da9;
+	font-size: 16px;
+	font-weight: 400;
+	&:disabled {
+		background-color: #e1e1e1;
+	}
+}
+input[type='number'] {
+	-moz-appearance: textfield;
+	appearance: textfield;
+}
+input[type='date']::-webkit-datetime-edit-text,
+input[type='date']::-webkit-datetime-edit-month-field,
+input[type='date']::-webkit-datetime-edit-day-field,
+input[type='date']::-webkit-datetime-edit-year-field {
+	color: #818da9;
+	font-size: 14px;
+}
+
+/* regular text style */
+input[type='date'].date-input--has-value::-webkit-datetime-edit-text,
+input[type='date'].date-input--has-value::-webkit-datetime-edit-month-field,
+input[type='date'].date-input--has-value::-webkit-datetime-edit-day-field,
+input[type='date'].date-input--has-value::-webkit-datetime-edit-year-field {
+	color: #818da9;
+	font-size: 14px;
+}
+::-webkit-calendar-picker-indicator {
+	background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="15" viewBox="0 0 24 24"><path fill="%23bbbbbb" d="M20 3h-1V1h-2v2H7V1H5v2H4c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 18H4V8h16v13z"/></svg>');
+}
+input[type='radio']:after {
+	width: 11px;
+	height: 11px;
+	border-radius: 14px;
+	top: -5.5px;
+	left: 1px;
+	position: relative;
+	background-color: #fff;
+	content: '';
+	display: inline-block;
+	visibility: visible;
+	border: 2px solid white;
+}
+
+input[type='radio']:checked:after {
+	width: 11px;
+	height: 11px;
+	border-radius: 14px;
+	top: -5.5px;
+	left: 1px;
+	position: relative;
+	background-color: #4baa79;
+	content: '';
+	display: inline-block;
+	visibility: visible;
+	border: 2px solid white;
+}
+.radio {
+	border-radius: 4px;
+	border: 1px #dadada solid;
+	padding: 16px 8px;
+	display: flex;
+	.radiogroup {
+		margin-right: 16px;
+	}
+}

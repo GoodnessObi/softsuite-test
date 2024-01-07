@@ -3,56 +3,87 @@ import ElementDetails from './ElementDetails';
 import AdditonalDetails from './AdditonalDetails';
 import Progress from '../../../../components/base/ProgressBar/Progressbar';
 import { formSteps } from '../../../../lib/data';
-import { Element } from '../../../../types/apiResponseTypes';
+import { Element, FormElementType } from '../../../../types/apiResponseTypes';
+import {
+	useCreateElementMutation,
+	useUpdateElementMutation,
+} from '../../../../store/apiService';
+import { useAppDispatch, useAppSelector } from '../../../../store/hook';
+import { clearCurrentElement } from '../../../../store/elementsSlice';
+
+const defaultState: FormElementType = {
+	name: '',
+	description: '',
+	payRunId: 0,
+	payRunValueId: 0,
+	classificationId: 0,
+	classificationValueId: 0,
+	categoryId: 0,
+	categoryValueId: 0,
+	reportingName: '',
+	processingType: '',
+	status: '',
+	prorate: '',
+	effectiveStartDate: new Date().toISOString(),
+	effectiveEndDate: new Date().toISOString(),
+	selectedMonths: [],
+	payFrequency: '',
+};
 
 export default function ELementsForm({
 	setIsModalOpen,
-	element,
 }: {
 	setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
-	element?: Element;
 }) {
-	const defaultState = {
-		name: '',
-		description: '',
-		payRunId: 0,
-		payRunValueId: 0,
-		classificationId: 0,
-		classificationValueId: 0,
-		categoryId: 0,
-		categoryValueId: 0,
-		reportingName: '',
-		processingType: '',
-		status: '',
-		prorate: '',
-		effectiveStartDate: '',
-		effectiveEndDate: '',
-		selectedMonths: [],
-		payFrequency: '',
-		modifiedBy: ',',
-	};
-
+	const dispatch = useAppDispatch();
+	const element = useAppSelector((state) => state.elements.currentElement);
 	const [formStep, setFormStep] = useState(formSteps.stepOne);
-	const [submitData, setSubmitData] = useState<Element>(defaultState);
+	const [formData, setFormData] = useState<FormElementType>(defaultState);
+	const [addElement, isSuccess] = useCreateElementMutation();
+	const [updateElement, updateSuccessful] = useUpdateElementMutation();
 
 	useEffect(() => {
 		if (element) {
-			setSubmitData({ ...element });
+			setFormData({ ...element });
 		}
 	}, [element]);
 
 	const closeModal = () => {
 		setIsModalOpen(false);
+		dispatch(clearCurrentElement());
 	};
 
 	const handleSubmit = async (e: Event) => {
 		e.preventDefault();
-		if (!submitData) {
+
+		if (!formData) {
 			return;
 		}
-		submitData.modifiedBy = 'Goodness Obi';
+		formData.modifiedBy = 'Goodness Obi';
+
+		formData['effectiveStartDate'] = new Date(
+			formData.effectiveStartDate
+		).toISOString();
+		formData['effectiveEndDate'] = new Date(
+			formData.effectiveEndDate
+		).toISOString();
+
 		try {
-			console.log(submitData);
+			if (element) {
+				console.log('edit', formData);
+				updateElement(formData as unknown as Element);
+
+				if (updateSuccessful) {
+					closeModal();
+				}
+			} else {
+				console.log(formData);
+				addElement(formData);
+
+				if (isSuccess) {
+					closeModal();
+				}
+			}
 		} catch (error) {
 			console.error('An error occurred while processing the element:', error);
 		}
@@ -70,16 +101,16 @@ export default function ELementsForm({
 				<ElementDetails
 					setFormStep={setFormStep}
 					closeModal={closeModal}
-					values={submitData}
-					setSubmitData={setSubmitData}
+					values={formData}
+					setFormData={setFormData}
 				/>
 			)}
 			{formStep === formSteps.stepTwo && (
 				<AdditonalDetails
 					setFormStep={setFormStep}
 					submitForm={handleSubmit}
-					values={submitData}
-					setSubmitData={setSubmitData}
+					values={formData}
+					setFormData={setFormData}
 				/>
 			)}
 		</>
