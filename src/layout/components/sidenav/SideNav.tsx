@@ -3,8 +3,8 @@ import './SideNav.scss';
 import { navlinks } from '../../../lib/data';
 import SideNavLink from './SideNavLink';
 import Icons from '../../../assets/images';
-import Dropdown from '../../../components/base/Form/dropdown/Dropdown';
 import { useState } from 'react';
+import Dropdown from '../../../components/base/Dropdown/Dropdown';
 
 export default function SideNav({ navIsOpen }: { navIsOpen: boolean }) {
 	const navigate = useNavigate();

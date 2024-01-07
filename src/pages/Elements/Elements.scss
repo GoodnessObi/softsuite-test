@@ -1,0 +1,35 @@
+@use '../../styles/variables' as var;
+@import '../../styles/breakpoints';
+
+.elements {
+	margin: 44px 65px 44px 44px;
+	background-color: var.$white;
+	padding: 24px;
+
+	&__action {
+		background-color: var.$color-background;
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		padding: 16px;
+		margin: 24px 0;
+	}
+
+	&__search {
+		display: flex;
+		gap: 16px;
+		align-items: center;
+	}
+
+	// &__header {
+	// 	margin-bottom: 24px;
+	// }
+}
+
+.page-title {
+	color: var.$color-primary;
+	font-size: 19px;
+	font-style: normal;
+	font-weight: 700;
+	line-height: normal;
+}

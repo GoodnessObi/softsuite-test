@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import Icons from '../../../assets/images';
 import './TopNav.scss';
-import Dropdown from '../../../components/base/Form/dropdown/Dropdown';
+import Dropdown from '../../../components/base/Dropdown/Dropdown';
 
 type NavbarProps = {
 	toggleNav: () => void;
@@ -34,8 +34,8 @@ export default function TopNav({ toggleNav, navIsOpen }: NavbarProps) {
 					</Dropdown>
 				</div>
 
-				<div className='navbar__search'>
-					<div className='navbar__search-group'>
+				<div className='search'>
+					<div className='search-group'>
 						<input
 							type='search'
 							className='form-input'

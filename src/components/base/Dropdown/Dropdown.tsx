@@ -1,6 +1,6 @@
 import { ReactNode } from 'react';
-import Icons from '../../../../assets/images';
 import './Dropdown.scss';
+import Icons from '../../../assets/images';
 
 export default function Dropdown({
 	children,

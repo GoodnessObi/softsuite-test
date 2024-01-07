@@ -1,14 +1,16 @@
-@use '../../styles/variables' as var;
-@import '../../styles/breakpoints';
+@use '../styles/variables' as var;
+@import '../styles/breakpoints';
 
 .layout {
 	min-height: 100vh;
 
 	&__body {
-		background-color: red;
+		background-color: var.$color-background;
 		width: 100%;
 		margin-top: var.$navbar-height-mobile;
-		padding: 30px 20px;
+		padding-top: 30px;
+		overflow-y: auto;
+		// padding: 30px 20px;
 		min-height: calc(100vh - var.$navbar-height-mobile);
 
 		@include md-breakpoint {
@@ -16,11 +18,11 @@
 			margin-top: var.$navbar-height-web;
 			margin-left: var.$sidenav-width;
 			min-height: calc(100vh - var.$navbar-height-web);
-			padding: 60px 20px;
+			// padding: 60px 20px;
 		}
 
 		@include lg-breakpoint {
-			padding: 60px;
+			// padding: 60px;
 		}
 
 		.back-button {
@@ -34,7 +36,7 @@
 					font-style: normal;
 					font-weight: 400;
 					font-size: 16px;
-					color: var.$color-primary-alt;
+					color: var.$color-primary;
 					margin-left: 14px;
 				}
 			}
