@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import Icons from '../../../assets/images';
 import './TopNav.scss';
-import Dropdown from '../../../components/base/Form/dropdown/Dropdown';
+import Dropdown from '../../../components/base/Dropdown/Dropdown';
 
 type NavbarProps = {
 	toggleNav: () => void;
