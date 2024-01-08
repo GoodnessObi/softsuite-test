@@ -1,10 +1,12 @@
 import { configureStore } from '@reduxjs/toolkit';
 import elements from './elementsSlice';
+import elementLinks from './elementLinksSlice';
 import { apiService } from './apiService';
 
 const store = configureStore({
 	reducer: {
 		elements,
+		elementLinks,
 		[apiService.reducerPath]: apiService.reducer, //add reducer
 	},
 	middleware: (getDefaultMiddleware) =>

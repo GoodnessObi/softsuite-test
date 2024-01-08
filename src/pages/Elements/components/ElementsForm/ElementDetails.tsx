@@ -5,18 +5,18 @@ import { useEffect } from 'react';
 import { Input, SelectBox, TextArea } from '../../../../components/base/Form';
 import Button from '../../../../components/base/Button/Button';
 import { formSteps } from '../../../../lib/data';
-import { Element } from '../../../../types/apiResponseTypes';
+import { FormElementType } from '../../../../types/apiResponseTypes';
 
 export default function ElementDetails({
 	setFormStep,
 	closeModal,
-	setSubmitData,
+	setFormData,
 	values,
 }: {
 	setFormStep: React.Dispatch<React.SetStateAction<string>>;
 	closeModal: () => void;
-	setSubmitData: React.Dispatch<React.SetStateAction<Element>>;
-	values: Element;
+	setFormData: React.Dispatch<React.SetStateAction<FormElementType>>;
+	values: FormElementType;
 }) {
 	const schema = yup.object({
 		name: yup.string().required('Name is required'),
@@ -25,26 +25,14 @@ export default function ElementDetails({
 			.number()
 			.required('Pay Run ID is required')
 			.positive('Pay Run ID must be a positive number'),
-		// payRunValueId: yup
-		// 	.number()
-		// 	.required('Pay Run Value ID is required')
-		// 	.positive('Pay Run Value ID must be a positive number'),
 		classificationId: yup
 			.number()
 			.required('Classification ID is required')
 			.positive('Classification ID must be a positive number'),
-		// classificationValueId: yup
-		// 	.number()
-		// 	.required('Classification Value ID is required')
-		// 	.positive('Classification Value ID must be a positive number'),
 		categoryId: yup
 			.number()
 			.required('Category ID is required')
 			.positive('Category ID must be a positive number'),
-		// categoryValueId: yup
-		// 	.number()
-		// 	.required('Category Value ID is required')
-		// 	.positive('Category Value ID must be a positive number'),
 		reportingName: yup.string().required('Reporting Name is required'),
 	});
 
@@ -79,7 +67,7 @@ export default function ElementDetails({
 
 	const saveData = (data: any) => {
 		console.log('--data', data);
-		setSubmitData((prev) => ({ ...prev, ...data }));
+		setFormData((prev) => ({ ...prev, ...data }));
 		setFormStep(formSteps.stepTwo);
 	};
 	const onError = (err: any) => {

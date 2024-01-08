@@ -1,7 +1,7 @@
 import { Navigate, Route, Routes } from 'react-router-dom';
 import { PageLayout } from './layout/Layout';
 import Elements from './pages/Elements/Elements';
-import ElementDetails from './pages/ElementLinks/ElementLinks';
+import ElementPage from './pages/Element/Element';
 
 function App() {
 	return (
@@ -9,7 +9,7 @@ function App() {
 			<Route path='/' element={<Navigate to='/elements' replace />} />
 			<Route path='/elements' element={<PageLayout />}>
 				<Route index element={<Elements />} />
-				<Route path=':id' element={<ElementDetails />} />
+				<Route path=':id' element={<ElementPage />} />
 			</Route>
 		</Routes>
 	);
