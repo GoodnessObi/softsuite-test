@@ -2,7 +2,7 @@ import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useEffect } from 'react';
-import { Input, SelectBox, TextArea } from '../../../../components/base/Form';
+import { Input, SelectBox } from '../../../../components/base/Form';
 import Button from '../../../../components/base/Button/Button';
 import { linkFormSteps } from '../../../../lib/data';
 import { FormElementLinkType } from '../../../../types/apiResponseTypes';
