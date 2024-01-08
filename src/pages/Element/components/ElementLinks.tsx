@@ -1,10 +1,15 @@
+import { useState } from 'react';
 import Icons from '../../../assets/images';
 import Button from '../../../components/base/Button/Button';
 import EmptyState from '../../../components/base/Emptystate/EmptyState';
 import { ElementLink } from '../../../types/apiResponseTypes';
 import ElementLinksTable from './ElementLinksTable';
+import CenterModal from '../../../components/base/Modal/CenterModal/CenterModal';
+import ELementLinkForm from './ElementLinkForm';
 
 export default function ElementLinks({ data }: { data: ElementLink[] }) {
+	const [linkModalOpen, setLinkModalOpen] = useState(false);
+
 	return (
 		<div>
 			<div className='elements__header'>
@@ -23,17 +28,13 @@ export default function ElementLinks({ data }: { data: ElementLink[] }) {
 								</span>
 							</div>
 						</div>
-
-						<Button btnType='secondary' styleProp={{ padding: '10px' }}>
-							<img src={Icons['FilterBtn']} alt='' />
-						</Button>
 					</div>
 
 					<Button
 						styleProp={{ padding: '16px' }}
-						// onClick={() => setIsModalOpen(true)}
+						onClick={() => setLinkModalOpen(true)}
 					>
-						Create Element
+						Create Element Link
 						<img src={Icons['Plus']} alt='' />
 					</Button>
 				</div>
@@ -44,6 +45,12 @@ export default function ElementLinks({ data }: { data: ElementLink[] }) {
 					<ElementLinksTable data={data} />
 				)}
 			</div>
+
+			{linkModalOpen && (
+				<CenterModal>
+					<ELementLinkForm setLinkModalOpen={setLinkModalOpen} />
+				</CenterModal>
+			)}
 		</div>
 	);
 }

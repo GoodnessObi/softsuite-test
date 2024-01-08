@@ -118,38 +118,6 @@ export const apiService = createApi({
 			query: (id) => `lookups/${id}/lookupvalues`,
 			// transformResponse: (response: LookUpValue) => response
 		}),
-		// fetchElementClassification: builder.query({
-		// 	query: () => 'lookups/2/lookupvalues',
-		// }),
-		// fetchPayrun: builder.query({
-		// 	query: () => 'lookups/5/lookupvalues',
-		// }),
-
-		// fetchJobTitle: builder.query({
-		// 	query: () => 'lookups/6/lookupvalues',
-		// }),
-		// fetchLocation: builder.query({
-		// 	query: () => 'lookups/7/lookupvalues',
-		// }),
-		// fetchEmployeeType: builder.query({
-		// 	query: () => 'lookups/4/lookupvalues',
-		// }),
-		// fetchEmployeeCategory: builder.query({
-		// 	query: () => 'lookups/5/lookupvalues',
-		// }),
-
-		// fetchUnion: builder.query({
-		// 	query: () => 'lookups/8/lookupvalues',
-		// }),
-		// fetchHousing: builder.query({
-		// 	query: () => 'lookups/9/lookupvalues',
-		// }),
-		// fetchWardrobe: builder.query({
-		// 	query: () => 'lookups/10/lookupvalues',
-		// }),
-		// fetchSecurity: builder.query({
-		// 	query: () => 'lookups/11/lookupvalues',
-		// }),
 	}),
 });
 
