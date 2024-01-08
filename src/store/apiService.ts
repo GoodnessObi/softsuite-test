@@ -1,8 +1,11 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import {
+	Department,
 	Element,
 	ElementLink,
 	Grade,
+	GradeStep,
+	LookUpValue,
 	Suborganization,
 } from '../types/apiResponseTypes';
 
@@ -88,28 +91,32 @@ export const apiService = createApi({
 			invalidatesTags: ['elementLinks'],
 		}),
 
-		getGrades: builder.query({
+		getGrades: builder.query<Grade[], void>({
 			query: () => 'grade',
 			transformResponse: (response: { data: Grade[] }) => {
 				return response.data;
 			},
 		}),
-		getGradeSteps: builder.query({
+		getGradeSteps: builder.query<GradeStep[], string>({
 			query: (id) => `grade/${id}/gradesteps`,
 		}),
-		getSuborganizations: builder.query({
+		getSuborganizations: builder.query<Suborganization[], void>({
 			query: () => 'suborganizations',
-			transformResponse: (response: { data: Suborganization }) => {
+			transformResponse: (response: { data: Suborganization[] }) => {
 				return response.data;
 			},
 		}),
-		getDepartments: builder.query({
+		getDepartments: builder.query<Department[], string>({
 			query: (id) => `suborganizations/${id}/departments`,
+			transformResponse: (response: { data: Department[] }) => {
+				return response.data;
+			},
 		}),
 
 		// Include endpoints from lookupApi
-		getLookupValues: builder.query({
+		getLookupValues: builder.query<LookUpValue[], string>({
 			query: (id) => `lookups/${id}/lookupvalues`,
+			// transformResponse: (response: LookUpValue) => response
 		}),
 		// fetchElementClassification: builder.query({
 		// 	query: () => 'lookups/2/lookupvalues',
