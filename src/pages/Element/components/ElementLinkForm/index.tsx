@@ -4,11 +4,11 @@ import { useEffect, useState } from 'react';
 import { linkFormSteps } from '../../../../lib/data';
 import Progress from './ProgressBar/Progressbar';
 import StaffInfo from './StaffInfo';
-import AdditionalInfo from './AdditionalInfo';
-import ProcessingInfo from './ProcessingInfo';
 import { useAppDispatch, useAppSelector } from '../../../../store/hook';
 import { FormElementLinkType } from '../../../../types/apiResponseTypes';
 import { clearCurrentElementLink } from '../../../../store/elementLinksSlice';
+import AdditionalInfo from './AdditionalInfo';
+import ProcessingInfo from './ProcessingInfo';
 
 const defaultState = {
 	elementId: 0,
@@ -48,7 +48,7 @@ export default function ELementLinkForm({
 	const elementLink = useAppSelector(
 		(state) => state.elementLinks.currentElementLink
 	);
-	const [formStep, setFormStep] = useState(linkFormSteps.stepOne);
+	const [formStep, setFormStep] = useState(linkFormSteps.stepThree);
 	const [formData, setFormData] = useState<FormElementLinkType>(defaultState);
 	// const [addElement, isSuccess] = useCreateElementMutation();
 	// const [updateElement, updateSuccessful] = useUpdateElementMutation();
@@ -134,7 +134,7 @@ export default function ELementLinkForm({
 					setFormData={setFormData}
 				/>
 			)}
-			{formStep === linkFormSteps.stepTwo && (
+			{formStep === linkFormSteps.stepThree && (
 				<ProcessingInfo
 					setFormStep={setFormStep}
 					submitForm={handleSubmit}
