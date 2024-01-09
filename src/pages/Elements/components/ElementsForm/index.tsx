@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import ElementDetails from './ElementDetails';
 import AdditonalDetails from './AdditonalDetails';
-import Progress from '../../../../components/base/ProgressBar/Progressbar';
+import Progress from './ProgressBar/Progressbar';
 import { formSteps } from '../../../../lib/data';
 import { Element, FormElementType } from '../../../../types/apiResponseTypes';
 import {

@@ -75,8 +75,27 @@ export const navlinks: NavLinks = {
 
 export const formSteps = {
 	stepOne: 'ELEMENT_DETAILS',
-	stepTwo: ' ADDITIONAL_DETAILS',
+	stepTwo: 'ADDITIONAL_DETAILS',
 };
+
+export const linkFormSteps = {
+	stepOne: 'STAFF_INFO',
+	stepTwo: 'PROCESSING_INFO',
+	stepThree: 'ADDITIONAL_INFO',
+};
+
+// export const lookUp = {
+// 	classificationId: '2',
+// 	payrunId: '5',
+// 	jobTitleId: '6',
+// 	locationId: '7',
+// 	employeeTypeid: '4',
+// 	employeeCategoryId: '5',
+// 	unionId: '8',
+// 	housingId: '9',
+// 	wardrobeId: '10',
+// 	securityId: '11',
+// };
 
 export const monthOptions = [
 	{ value: 'January', label: 'January' },

@@ -7,6 +7,7 @@ import { ElementLink } from '../../types/apiResponseTypes';
 
 export default function ElementPage() {
 	const { id } = useParams() as { id: string };
+
 	const { data: element, isLoading, isSuccess } = useGetElementQuery(id);
 	// const [user] = useUser(id);
 	if (isLoading) {

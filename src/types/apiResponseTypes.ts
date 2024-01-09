@@ -50,6 +50,8 @@ export type ElementLink = {
 	}[];
 };
 
+export type FormElementLinkType = Partial<ElementLink>;
+
 export type LookUp = {
 	createdAt: string; // Assuming createdAt is a string representing a date in ISO format
 	name: string;
