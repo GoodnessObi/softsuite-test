@@ -1,5 +1,5 @@
-import { useGetSuborganizationsQuery } from '../../store/apiService';
-import { DataItem, getDataName } from '../../utils';
+import { useGetSuborganizationsQuery } from '../store/apiService';
+import { DataItem, getDataName } from '../utils';
 
 export default function useGetSuborganizations(suborganizationId: string) {
 	const { data } = useGetSuborganizationsQuery();

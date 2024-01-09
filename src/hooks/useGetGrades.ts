@@ -1,5 +1,5 @@
-import { useGetGradesQuery } from '../../store/apiService';
-import { DataItem, getDataName } from '../../utils';
+import { useGetGradesQuery } from '../store/apiService';
+import { DataItem, getDataName } from '../utils';
 
 export default function useFetchGrade(gradeId: string) {
 	const { data } = useGetGradesQuery();

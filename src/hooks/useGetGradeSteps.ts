@@ -1,5 +1,5 @@
-import { useGetGradeStepsQuery } from '../../store/apiService';
-import { DataItem, getDataName } from '../../utils';
+import { useGetGradeStepsQuery } from '../store/apiService';
+import { DataItem, getDataName } from '../utils';
 
 export default function useGetGradeSteps(
 	selectedGradeId: string,

@@ -4,8 +4,9 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { useEffect } from 'react';
 import { Input, SelectBox, TextArea } from '../../../../components/base/Form';
 import Button from '../../../../components/base/Button/Button';
-import { formSteps } from '../../../../lib/data';
+import { formSteps, lookUpIds } from '../../../../lib/data';
 import { FormElementType } from '../../../../types/apiResponseTypes';
+import useGetLookupValues from '../../../../hooks/useGetLookupValues';
 
 export default function ElementDetails({
 	setFormStep,
@@ -18,18 +19,25 @@ export default function ElementDetails({
 	setFormData: React.Dispatch<React.SetStateAction<FormElementType>>;
 	values: FormElementType;
 }) {
+	const classifications = useGetLookupValues(lookUpIds.elementClassification);
+	const categories = useGetLookupValues(lookUpIds.elementCategory);
+	const payruns = useGetLookupValues(lookUpIds.payRun);
+
 	const schema = yup.object({
 		name: yup.string().required('Name is required'),
 		description: yup.string().required('Description is required'),
-		payRunId: yup
+		payRunId: yup.number(),
+		classificationId: yup.number(),
+		categoryId: yup.number(),
+		payRunValueId: yup
 			.number()
 			.required('Pay Run ID is required')
 			.positive('Pay Run ID must be a positive number'),
-		classificationId: yup
+		classificationValueId: yup
 			.number()
 			.required('Classification ID is required')
 			.positive('Classification ID must be a positive number'),
-		categoryId: yup
+		categoryValueId: yup
 			.number()
 			.required('Category ID is required')
 			.positive('Category ID must be a positive number'),
@@ -50,24 +58,30 @@ export default function ElementDetails({
 		const {
 			name,
 			description,
-			classificationId,
-			payRunId,
-			categoryId,
+			classificationValueId,
+			categoryValueId,
+			payRunValueId,
 			reportingName,
 		} = values;
 
+		console.log('I rannnn');
+
 		setValue('name', name);
 		setValue('description', description);
-		setValue('classificationId', classificationId);
-		setValue('payRunId', payRunId);
-		setValue('categoryId', categoryId);
+		setValue('classificationValueId', classificationValueId);
+		setValue('categoryValueId', categoryValueId);
+		setValue('payRunValueId', payRunValueId);
 		setValue('reportingName', reportingName);
 		// eslint-disable-next-line
-	}, [values]);
+	}, [values, classifications, payruns, categories]);
 
 	const saveData = (data: any) => {
-		console.log('--data', data);
-		setFormData((prev) => ({ ...prev, ...data }));
+		const lookUps = {
+			classificationId: +classifications.id,
+			categoryId: +categories.id,
+			payRunId: +payruns.id,
+		};
+		setFormData((prev) => ({ ...prev, ...data, ...lookUps }));
 		setFormStep(formSteps.stepTwo);
 	};
 	const onError = (err: any) => {
@@ -92,41 +106,56 @@ export default function ElementDetails({
 							placeholder='Input name'
 							id='elementClassifcation'
 							register={{
-								...register('classificationId', {
+								...register('classificationValueId', {
 									setValueAs: (v) => +v,
 								}),
 							}}
-							error={errors.classificationId}
+							error={errors.classificationValueId}
 						>
-							<option value='201'>Select Element Classification</option>
+							<option value=''>Select Element Classification</option>
+							{classifications?.data?.map((item) => (
+								<option key={item.id} value={item.id}>
+									{item.name}
+								</option>
+							))}
 						</SelectBox>
 					</div>
 
 					<div className='form-row-2'>
 						<SelectBox
-							label='categoryId'
-							id='categoryId'
+							label='Category'
+							id='categoryValueId'
 							register={{
-								...register('categoryId', {
+								...register('categoryValueId', {
 									setValueAs: (v) => +v,
 								}),
 							}}
-							error={errors.categoryId}
+							error={errors.categoryValueId}
 						>
-							<option value='401'>Select Element Classification</option>
+							<option value=''>Select Element Category</option>
+							{categories?.data?.map((item) => (
+								<option key={item.id} value={item.id}>
+									{item.name}
+								</option>
+							))}
 						</SelectBox>
 
 						<SelectBox
 							label='Payrun'
-							id='payRunId'
+							id='payRunValueId,'
 							register={{
-								...register('payRunId', {
+								...register('payRunValueId', {
 									setValueAs: (v) => parseInt(v),
 								}),
 							}}
-							error={errors.payRunId}
+							error={errors.payRunValueId}
 						>
-							<option value='3'>Select Element Classification</option>
+							<option value=''>Select Payrun</option>
+							{payruns?.data?.map((item) => (
+								<option key={item.id} value={item.id}>
+									{item.name}
+								</option>
+							))}
 						</SelectBox>
 					</div>
 

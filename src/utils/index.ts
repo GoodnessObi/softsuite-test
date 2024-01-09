@@ -8,3 +8,12 @@ export const getDataName = (id: string, data: DataItem[], isTrue = true) => {
 		return item ? item.name : '';
 	}
 };
+
+export const convertToDataItems = (
+	inputArray: Record<string, string>[]
+): DataItem[] => {
+	return inputArray.map((item) => ({
+		id: item.id,
+		name: item.name,
+	}));
+};

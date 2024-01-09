@@ -89,12 +89,10 @@ export default function ElementsTable({
 					{items?.map((item) => (
 						<tr key={item.id}>
 							<td data-name='name' className='itemname'>
-								{/* <Link to={`/items/${item.id}`}> */}
 								{item.name}
-								{/* </Link> */}
 							</td>
-							<td data-name='category'>{item.categoryId}</td>
-							<td data-name='classification'>{item.classificationId}</td>
+							<td data-name='category'>{item.categoryValueId}</td>
+							<td data-name='classification'>{item.classificationValueId}</td>
 							<td data-name='status' className=''>
 								<span className={`status-span ${item.status.toLowerCase()}`}>
 									{item.status}

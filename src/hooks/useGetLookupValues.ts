@@ -1,7 +1,7 @@
-import { useGetLookupValuesQuery } from '../../store/apiService';
-import { DataItem, getDataName } from '../../utils';
+import { useGetLookupValuesQuery } from '../store/apiService';
+import { DataItem, getDataName } from '../utils';
 
-export default function useFetchHousing(id: string) {
+export default function useGetLookupValues(id: string) {
 	const { data } = useGetLookupValuesQuery(id, {
 		skip: id === '',
 	});
@@ -14,5 +14,5 @@ export default function useFetchHousing(id: string) {
 
 	const name = getDataName(id, arr);
 
-	return { name, data };
+	return { id, name, data: arr };
 }

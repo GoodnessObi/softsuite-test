@@ -115,7 +115,7 @@ export const apiService = createApi({
 		}),
 
 		// Include endpoints from lookupApi
-		getLookup: builder.query<LookUp[], string>({
+		getLookup: builder.query<LookUp[], void>({
 			query: () => `lookups`,
 			transformResponse: (response: { data: LookUp[] }) => response.data,
 		}),

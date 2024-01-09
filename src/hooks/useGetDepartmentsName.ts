@@ -1,5 +1,5 @@
-import { useGetDepartmentsQuery } from '../../store/apiService';
-import { DataItem, getDataName } from '../../utils';
+import { useGetDepartmentsQuery } from '../store/apiService';
+import { DataItem, getDataName } from '../utils';
 
 export default function useGetDepartmentname(
 	selectedSuborganizationId: string,
