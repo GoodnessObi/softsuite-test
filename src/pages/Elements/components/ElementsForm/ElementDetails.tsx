@@ -1,12 +1,32 @@
 import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { useEffect } from 'react';
 import { Input, SelectBox, TextArea } from '../../../../components/base/Form';
 import Button from '../../../../components/base/Button/Button';
 import { formSteps, lookUpIds } from '../../../../lib/data';
 import { FormElementType } from '../../../../types/apiResponseTypes';
 import useGetLookupValues from '../../../../hooks/useGetLookupValues';
+
+const schema = yup.object({
+	name: yup.string().required('Name is required'),
+	description: yup.string().required('Description is required'),
+	payRunId: yup.number(),
+	classificationId: yup.number(),
+	categoryId: yup.number(),
+	payRunValueId: yup
+		.number()
+		.required('Pay Run ID is required')
+		.positive('Pay Run ID must be a positive number'),
+	classificationValueId: yup
+		.number()
+		.required('Classification ID is required')
+		.positive('Classification ID must be a positive number'),
+	categoryValueId: yup
+		.number()
+		.required('Category ID is required')
+		.positive('Category ID must be a positive number'),
+	reportingName: yup.string().required('Reporting Name is required'),
+});
 
 export default function ElementDetails({
 	setFormStep,
@@ -19,66 +39,48 @@ export default function ElementDetails({
 	setFormData: React.Dispatch<React.SetStateAction<FormElementType>>;
 	values: FormElementType;
 }) {
-	const classifications = useGetLookupValues(lookUpIds.elementClassification);
-	const categories = useGetLookupValues(lookUpIds.elementCategory);
-	const payruns = useGetLookupValues(lookUpIds.payRun);
-
-	const schema = yup.object({
-		name: yup.string().required('Name is required'),
-		description: yup.string().required('Description is required'),
-		payRunId: yup.number(),
-		classificationId: yup.number(),
-		categoryId: yup.number(),
-		payRunValueId: yup
-			.number()
-			.required('Pay Run ID is required')
-			.positive('Pay Run ID must be a positive number'),
-		classificationValueId: yup
-			.number()
-			.required('Classification ID is required')
-			.positive('Classification ID must be a positive number'),
-		categoryValueId: yup
-			.number()
-			.required('Category ID is required')
-			.positive('Category ID must be a positive number'),
-		reportingName: yup.string().required('Reporting Name is required'),
-	});
-
 	const {
 		handleSubmit,
 		register,
-		// watch,
-		setValue,
+		watch,
+		getValues,
 		formState: { errors },
 	} = useForm({
 		resolver: yupResolver(schema),
+		defaultValues: values,
 	});
 
-	useEffect(() => {
-		const {
-			name,
-			description,
-			classificationValueId,
-			categoryValueId,
-			payRunValueId,
-			reportingName,
-		} = values;
+	const { data: classifications, id: classificationParentId } =
+		useGetLookupValues(lookUpIds.elementClassification);
+	const { data: categoriesData, id: categoryParentId } = useGetLookupValues(
+		lookUpIds.elementCategory
+	);
+	const payruns = useGetLookupValues(lookUpIds.payRun);
+	const selectedClassificationId = watch('classificationValueId');
 
-		console.log('I rannnn');
+	const filteredCategories = () => {
+		const indClassification = classifications.find(
+			(classification) => +classification.id === selectedClassificationId
+		);
 
-		setValue('name', name);
-		setValue('description', description);
-		setValue('classificationValueId', classificationValueId);
-		setValue('categoryValueId', categoryValueId);
-		setValue('payRunValueId', payRunValueId);
-		setValue('reportingName', reportingName);
-		// eslint-disable-next-line
-	}, [values, classifications, payruns, categories]);
+		if (indClassification?.name === 'Deduction') {
+			console.log(categoriesData.filter((item) => item.name !== 'Deduction'));
+			return categoriesData.filter((item) => item.name.includes('Deduction'));
+		}
+
+		if (indClassification?.name === 'Earning') {
+			return categoriesData.filter((item) => item.name.includes('Earning'));
+		}
+
+		return categoriesData;
+	};
+
+	console.log('watchedFieldValue', getValues('classificationValueId'));
 
 	const saveData = (data: any) => {
 		const lookUps = {
-			classificationId: +classifications.id,
-			categoryId: +categories.id,
+			classificationId: +classificationParentId,
+			categoryId: +categoryParentId,
 			payRunId: +payruns.id,
 		};
 		setFormData((prev) => ({ ...prev, ...data, ...lookUps }));
@@ -112,8 +114,10 @@ export default function ElementDetails({
 							}}
 							error={errors.classificationValueId}
 						>
-							<option value=''>Select Element Classification</option>
-							{classifications?.data?.map((item) => (
+							<option value='' disabled>
+								Select Element Classification
+							</option>
+							{classifications?.map((item) => (
 								<option key={item.id} value={item.id}>
 									{item.name}
 								</option>
@@ -131,9 +135,12 @@ export default function ElementDetails({
 								}),
 							}}
 							error={errors.categoryValueId}
+							disabled={!selectedClassificationId}
 						>
-							<option value=''>Select Element Category</option>
-							{categories?.data?.map((item) => (
+							<option disabled value=''>
+								Select Element Category
+							</option>
+							{filteredCategories()?.map((item) => (
 								<option key={item.id} value={item.id}>
 									{item.name}
 								</option>
@@ -150,7 +157,9 @@ export default function ElementDetails({
 							}}
 							error={errors.payRunValueId}
 						>
-							<option value=''>Select Payrun</option>
+							<option disabled value=''>
+								Select Payrun
+							</option>
 							{payruns?.data?.map((item) => (
 								<option key={item.id} value={item.id}>
 									{item.name}
@@ -158,7 +167,6 @@ export default function ElementDetails({
 							))}
 						</SelectBox>
 					</div>
-
 					<div className='form-row'>
 						<TextArea
 							label='Description'
@@ -168,7 +176,6 @@ export default function ElementDetails({
 							error={errors.description}
 						/>
 					</div>
-
 					<div className='form-row'>
 						<TextArea
 							label='Reporting Name'
