@@ -45,7 +45,6 @@ export default function ElementDetails({
 		handleSubmit,
 		register,
 		watch,
-		getValues,
 		formState: { errors },
 	} = useForm({
 		resolver: yupResolver(schema),
@@ -72,19 +71,22 @@ export default function ElementDetails({
 			(classification) => +classification.id === selectedClassificationId
 		);
 
+		let categoriesArr = categoriesData;
+
 		if (indClassification?.name === 'Deduction') {
-			console.log(categoriesData.filter((item) => item.name !== 'Deduction'));
-			return categoriesData.filter((item) => item.name.includes('Deduction'));
+			categoriesArr = categoriesData.filter((item) =>
+				item.name.includes('Deduction')
+			);
 		}
 
 		if (indClassification?.name === 'Earning') {
-			return categoriesData.filter((item) => item.name.includes('Earning'));
+			categoriesArr = categoriesData.filter((item) =>
+				item.name.includes('Earning')
+			);
 		}
 
-		return categoriesData;
+		return categoriesArr;
 	};
-
-	console.log('watchedFieldValue', getValues('classificationValueId'));
 
 	const saveData = (data: any) => {
 		const lookUps = {

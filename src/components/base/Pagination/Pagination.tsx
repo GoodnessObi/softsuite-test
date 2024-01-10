@@ -15,7 +15,6 @@ export default function Pagination({
 	handlePageChange: (event: any) => void;
 }) {
 	const handlePageClick = (event: any) => {
-		console.log('clickkkk');
 		handlePageChange(event.selected);
 		// const newOffset = (event.selected * itemsPerPage) % users.length;
 		// setItemOffset(newOffset);

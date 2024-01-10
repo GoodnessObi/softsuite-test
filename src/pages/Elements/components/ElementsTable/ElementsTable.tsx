@@ -37,7 +37,6 @@ export default function ElementsTable({
 		}
 	};
 
-	console.log('ttttt', data);
 	if (items && items?.length <= 0) {
 		return (
 			<EmptyState
