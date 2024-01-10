@@ -10,70 +10,59 @@ import {
 import Button from '../../../../components/base/Button/Button';
 import { formSteps, monthOptions } from '../../../../lib/data';
 import { FormElementType } from '../../../../types/apiResponseTypes';
-import { useEffect } from 'react';
+import { useAppSelector } from '../../../../store/hook';
 import moment from 'moment';
+
+const schema = yup.object({
+	processingType: yup.string().required('Processing Type is required'),
+	status: yup.string().required('Status is required'),
+	prorate: yup.string().required('Prorate is required'),
+	effectiveStartDate: yup.string().required('Effective Start Date is required'),
+	effectiveEndDate: yup.string().required('Effective End Date is required'),
+	selectedMonths: yup
+		.array()
+		.of(yup.string())
+		.required('Selected Months are required'),
+	payFrequency: yup.string().required('Pay Frequency is required'),
+});
 
 type AdditonalDetailsProps = {
 	setFormStep: React.Dispatch<React.SetStateAction<string>>;
 	submitForm: (e: Event) => Promise<void>;
-	setFormData: React.Dispatch<React.SetStateAction<FormElementType>>;
-	values: FormElementType;
+	setFormData: React.Dispatch<
+		React.SetStateAction<FormElementType | undefined>
+	>;
 };
 
 export default function AdditonalDetails({
 	setFormStep,
 	submitForm,
 	setFormData,
-	values,
 }: AdditonalDetailsProps) {
-	const schema = yup.object({
-		processingType: yup.string().required('Processing Type is required'),
-		status: yup.string().required('Status is required'),
-		prorate: yup.string().required('Prorate is required'),
-		effectiveStartDate: yup
-			.string()
-			.required('Effective Start Date is required'),
-		effectiveEndDate: yup.string().required('Effective End Date is required'),
-		selectedMonths: yup
-			.array()
-			.of(yup.string())
-			.required('Selected Months are required'),
-		payFrequency: yup.string().required('Pay Frequency is required'),
-	});
-
+	const element = useAppSelector((state) => state.elements.currentElement);
 	const {
 		handleSubmit,
 		register,
-		// watch,
-		setValue,
+		watch,
 		formState: { errors },
 	} = useForm({
 		resolver: yupResolver(schema),
+		defaultValues: {
+			processingType: element?.processingType ?? '',
+			status: element?.status ?? '',
+			prorate: element?.prorate ?? '',
+			effectiveStartDate:
+				moment(element?.effectiveStartDate).format('YYYY-MM-DD') ??
+				moment(new Date()).format('YYYY-MM-DD'),
+			effectiveEndDate:
+				moment(element?.effectiveEndDate).format('YYYY-MM-DD') ??
+				moment(new Date()).format('YYYY-MM-DD'),
+			selectedMonths: element?.selectedMonths ?? [],
+			payFrequency: element?.payFrequency ?? '',
+		},
 	});
 
-	useEffect(() => {
-		const {
-			processingType,
-			status,
-			prorate,
-			effectiveStartDate,
-			effectiveEndDate,
-			selectedMonths,
-			payFrequency,
-		} = values;
-
-		setValue('processingType', processingType);
-		setValue('status', status);
-		setValue('prorate', prorate);
-		setValue(
-			'effectiveStartDate',
-			moment(effectiveStartDate).format('yyyy-MM-dd')
-		);
-		setValue('effectiveEndDate', moment(effectiveEndDate).format('yyyy-MM-dd'));
-		setValue('selectedMonths', selectedMonths);
-		setValue('payFrequency', payFrequency);
-		// eslint-disable-next-line
-	}, [values]);
+	const selectedPayFrequency = watch('payFrequency');
 
 	const submit = async (data: any, e: any) => {
 		console.log(data);
@@ -91,7 +80,11 @@ export default function AdditonalDetails({
 							required
 							placeholder='Select Date'
 							type='date'
-							register={{ ...register('effectiveStartDate') }}
+							register={{
+								...register('effectiveStartDate', {
+									valueAsDate: true,
+								}),
+							}}
 							error={errors.effectiveStartDate}
 						/>
 
@@ -100,7 +93,11 @@ export default function AdditonalDetails({
 							required
 							placeholder='Select Date'
 							type='date'
-							register={{ ...register('effectiveEndDate') }}
+							register={{
+								...register('effectiveEndDate', {
+									valueAsDate: true,
+								}),
+							}}
 							error={errors.effectiveEndDate}
 						/>
 					</div>
@@ -139,7 +136,7 @@ export default function AdditonalDetails({
 							placeholder='Input name'
 							register={{ ...register('selectedMonths') }}
 							error={errors.selectedMonths}
-							// disabled={selectedPayFrequency !== '2'}
+							disabled={selectedPayFrequency !== '2'}
 							multiple={true}
 						>
 							{monthOptions.map((option) => (
@@ -179,7 +176,7 @@ export default function AdditonalDetails({
 						styleProp={{ width: '100%' }}
 						onClick={() => setFormStep(formSteps.stepOne)}
 					>
-						Cancel
+						Back
 					</Button>
 					<Button
 						type='submit'

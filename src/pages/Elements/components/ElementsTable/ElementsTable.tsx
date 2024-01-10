@@ -38,7 +38,7 @@ export default function ElementsTable({
 	};
 
 	console.log('ttttt', data);
-	if (items && items?.length <= 9) {
+	if (items && items?.length <= 0) {
 		return (
 			<EmptyState
 				text='There are no elements to display'
@@ -49,98 +49,92 @@ export default function ElementsTable({
 
 	return (
 		<div className='elements-table'>
-			<>
-				<div className='mobile-header'>
-					<p>items</p>
-					<span role='button' className='open-filter'>
-						<img src={Icons['Filter']} alt='' />
-					</span>
-				</div>
+			<div className='mobile-header'>
+				<p>items</p>
+				<span role='button' className='open-filter'>
+					<img src={Icons['Filter']} alt='' />
+				</span>
+			</div>
 
-				<table>
-					<thead>
-						<tr>
-							<th>
-								Name{' '}
-								<span role='button' className='open-filter'>
-									<img src={Icons['Filter']} alt='' />
-								</span>
-							</th>
-							<th>
-								Element Category{' '}
-								<span role='button' className='open-filter'>
-									<img src={Icons['Filter']} alt='' />
-								</span>
-							</th>
-							<th>
-								Element Classification{' '}
-								<span role='button' className='open-filter'>
-									<img src={Icons['Filter']} alt='' />
-								</span>
-							</th>
-							<th>
-								Status{' '}
-								<span role='button' className='open-filter'>
-									<img src={Icons['Filter']} alt='' />
-								</span>
-							</th>
-							<th className='date'>
-								Date and Time Modified{' '}
-								<span role='button' className='open-filter'>
-									<img src={Icons['Filter']} alt='' />
-								</span>
-							</th>
-							<th>
-								Modified By{' '}
-								<span role='button' className='open-filter'>
-									<img src={Icons['Filter']} alt='' />
-								</span>
-							</th>
-							<th>Action</th>
-						</tr>
-					</thead>
-					{isLoading ? (
-						<Spinner />
-					) : (
-						<tbody>
-							{items?.map((item) => (
-								<tr key={item.id}>
-									<td data-name='name' className='itemname'>
-										{item.name}
-									</td>
-									<td data-name='category'>{item.categoryValueId}</td>
-									<td data-name='classification'>
-										{item.classificationValueId}
-									</td>
-									<td data-name='status' className=''>
-										<span
-											className={`status-span ${item.status.toLowerCase()}`}
-										>
-											{item.status}
-										</span>
-									</td>
-									<td className='date'>
-										{moment(item?.createdAt).format('MMMM Do YYYY, h:mm:ss a')}
-									</td>
-									<td data-name='organization'>{item.modifiedBy}</td>
+			<table>
+				<thead>
+					<tr>
+						<th>
+							Name{' '}
+							<span role='button' className='open-filter'>
+								<img src={Icons['Filter']} alt='' />
+							</span>
+						</th>
+						<th>
+							Element Category{' '}
+							<span role='button' className='open-filter'>
+								<img src={Icons['Filter']} alt='' />
+							</span>
+						</th>
+						<th>
+							Element Classification{' '}
+							<span role='button' className='open-filter'>
+								<img src={Icons['Filter']} alt='' />
+							</span>
+						</th>
+						<th>
+							Status{' '}
+							<span role='button' className='open-filter'>
+								<img src={Icons['Filter']} alt='' />
+							</span>
+						</th>
+						<th className='date'>
+							Date and Time Modified{' '}
+							<span role='button' className='open-filter'>
+								<img src={Icons['Filter']} alt='' />
+							</span>
+						</th>
+						<th>
+							Modified By{' '}
+							<span role='button' className='open-filter'>
+								<img src={Icons['Filter']} alt='' />
+							</span>
+						</th>
+						<th>Action</th>
+					</tr>
+				</thead>
+				{isLoading ? (
+					<Spinner />
+				) : (
+					<tbody>
+						{items?.map((item) => (
+							<tr key={item.id}>
+								<td data-name='name' className='itemname'>
+									{item.name}
+								</td>
+								<td data-name='category'>{item.categoryValueId}</td>
+								<td data-name='classification'>{item.classificationValueId}</td>
+								<td data-name='status' className=''>
+									<span className={`status-span ${item.status.toLowerCase()}`}>
+										{item.status}
+									</span>
+								</td>
+								<td className='date'>
+									{moment(item?.createdAt).format('MMMM Do YYYY, h:mm:ss a')}
+								</td>
+								<td data-name='organization'>{item.modifiedBy}</td>
 
-									<td data-name='action' className='action'>
-										<DropdownBtn item={item} setIsModalOpen={setIsModalOpen} />
-									</td>
-								</tr>
-							))}
-						</tbody>
-					)}
-				</table>
+								<td data-name='action' className='action'>
+									<DropdownBtn item={item} setIsModalOpen={setIsModalOpen} />
+								</td>
+							</tr>
+						))}
+					</tbody>
+				)}
+			</table>
 
-				<Pagination
-					totalCount={data?.length ?? 0}
-					pageCount={pageCount}
-					handlePageChange={handlePageChange}
-					itemsPerPage={itemsPerPage}
-					setItemsPerPage={setItemsPerPage}
-				/>
-			</>
+			<Pagination
+				totalCount={data?.length ?? 0}
+				pageCount={pageCount}
+				handlePageChange={handlePageChange}
+				itemsPerPage={itemsPerPage}
+				setItemsPerPage={setItemsPerPage}
+			/>
 		</div>
 	);
 }

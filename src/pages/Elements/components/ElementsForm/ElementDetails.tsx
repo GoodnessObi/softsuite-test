@@ -6,6 +6,7 @@ import Button from '../../../../components/base/Button/Button';
 import { formSteps, lookUpIds } from '../../../../lib/data';
 import { FormElementType } from '../../../../types/apiResponseTypes';
 import useGetLookupValues from '../../../../hooks/useGetLookupValues';
+import { useAppSelector } from '../../../../store/hook';
 
 const schema = yup.object({
 	name: yup.string().required('Name is required'),
@@ -32,13 +33,14 @@ export default function ElementDetails({
 	setFormStep,
 	closeModal,
 	setFormData,
-	values,
 }: {
 	setFormStep: React.Dispatch<React.SetStateAction<string>>;
 	closeModal: () => void;
-	setFormData: React.Dispatch<React.SetStateAction<FormElementType>>;
-	values: FormElementType;
+	setFormData: React.Dispatch<
+		React.SetStateAction<FormElementType | undefined>
+	>;
 }) {
+	const element = useAppSelector((state) => state.elements.currentElement);
 	const {
 		handleSubmit,
 		register,
@@ -47,7 +49,14 @@ export default function ElementDetails({
 		formState: { errors },
 	} = useForm({
 		resolver: yupResolver(schema),
-		defaultValues: values,
+		defaultValues: {
+			name: element?.name ?? '',
+			description: element?.description ?? '',
+			payRunValueId: element?.payRunValueId ?? 0,
+			classificationValueId: element?.classificationValueId ?? 0,
+			categoryValueId: element?.categoryValueId ?? 0,
+			reportingName: element?.reportingName ?? '',
+		},
 	});
 
 	const { data: classifications, id: classificationParentId } =
