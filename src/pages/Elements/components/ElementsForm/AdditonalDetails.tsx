@@ -11,7 +11,7 @@ import Button from '../../../../components/base/Button/Button';
 import { formSteps, monthOptions } from '../../../../lib/data';
 import { FormElementType } from '../../../../types/apiResponseTypes';
 import { useAppSelector } from '../../../../store/hook';
-import moment from 'moment';
+import { formatDate } from '../../../../utils';
 
 const schema = yup.object({
 	processingType: yup.string().required('Processing Type is required'),
@@ -51,12 +51,8 @@ export default function AdditonalDetails({
 			processingType: element?.processingType ?? '',
 			status: element?.status ?? '',
 			prorate: element?.prorate ?? '',
-			effectiveStartDate:
-				moment(element?.effectiveStartDate).format('YYYY-MM-DD') ??
-				moment(new Date()).format('YYYY-MM-DD'),
-			effectiveEndDate:
-				moment(element?.effectiveEndDate).format('YYYY-MM-DD') ??
-				moment(new Date()).format('YYYY-MM-DD'),
+			effectiveStartDate: formatDate(element?.effectiveStartDate),
+			effectiveEndDate: formatDate(element?.effectiveEndDate),
 			selectedMonths: element?.selectedMonths ?? [],
 			payFrequency: element?.payFrequency ?? '',
 		},
@@ -81,9 +77,7 @@ export default function AdditonalDetails({
 							placeholder='Select Date'
 							type='date'
 							register={{
-								...register('effectiveStartDate', {
-									valueAsDate: true,
-								}),
+								...register('effectiveStartDate'),
 							}}
 							error={errors.effectiveStartDate}
 						/>
@@ -94,9 +88,7 @@ export default function AdditonalDetails({
 							placeholder='Select Date'
 							type='date'
 							register={{
-								...register('effectiveEndDate', {
-									valueAsDate: true,
-								}),
+								...register('effectiveEndDate'),
 							}}
 							error={errors.effectiveEndDate}
 						/>

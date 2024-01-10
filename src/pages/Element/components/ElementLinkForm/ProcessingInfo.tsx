@@ -1,5 +1,4 @@
 import { FormProps } from './StaffInfo';
-import { useEffect } from 'react';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
@@ -11,55 +10,49 @@ import {
 	ToggleButton,
 } from '../../../../components/base/Form';
 import Button from '../../../../components/base/Button/Button';
+import { useAppSelector } from '../../../../store/hook';
+import { formatDate } from '../../../../utils';
+
+const schema = yup.object({
+	amountType: yup.string().required('Amount Type is required'),
+	amount: yup.number(),
+	rate: yup.number(),
+	effectiveStartDate: yup.string(),
+	effectiveEndDate: yup.string(),
+	status: yup.string(),
+	automate: yup.string(),
+});
 
 export default function ProcessingInfo({
 	setFormStep,
 	setFormData,
-	values,
 	submitForm,
 }: Omit<FormProps, 'closeModal'> & {
 	submitForm: (e: Event) => Promise<void>;
 }) {
-	const schema = yup.object({
-		amountType: yup.string().required('Amount Type is required'),
-		amount: yup.number().required('Amount is required'),
-		// rate: yup.number().required('Rate is required'),
-		effectiveStartDate: yup
-			.string()
-			.required('Effective Start Date is required'),
-		effectiveEndDate: yup.string().required('Effective End Date is required'),
-		status: yup.string().required('Status is required'),
-		automate: yup.string().required('Automate is required'),
-	});
+	const elementLink = useAppSelector(
+		(state) => state.elementLinks.currentElementLink
+	);
 
 	const {
 		handleSubmit,
 		register,
-		// watch,
-		setValue,
+		watch,
 		formState: { errors },
 	} = useForm({
 		resolver: yupResolver(schema),
+		defaultValues: {
+			amountType: elementLink?.amountType ?? '',
+			amount: elementLink?.amount ?? 0,
+			rate: elementLink?.rate ?? 0,
+			effectiveStartDate: formatDate(elementLink?.effectiveStartDate),
+			effectiveEndDate: formatDate(elementLink?.effectiveEndDate),
+			status: elementLink?.status ?? '',
+			automate: elementLink?.automate ?? '',
+		},
 	});
 
-	useEffect(() => {
-		const {
-			amountType,
-			amount,
-			effectiveStartDate,
-			effectiveEndDate,
-			automate,
-			status,
-		} = values;
-
-		setValue('amountType', amountType ?? '');
-		setValue('amount', amount ?? 0);
-		setValue('effectiveStartDate', effectiveStartDate ?? '');
-		setValue('effectiveEndDate', effectiveEndDate ?? '');
-		setValue('automate', automate ?? '');
-		setValue('status', status ?? '');
-		// eslint-disable-next-line
-	}, [values]);
+	const amountTypeSelected = watch('amountType');
 
 	const submit = async (data: any, e: any) => {
 		console.log(data);
@@ -77,22 +70,38 @@ export default function ProcessingInfo({
 							placeholder='Input name'
 							id='amountType'
 							register={{
-								...register('amountType', {
-									setValueAs: (v) => +v,
-								}),
+								...register('amountType'),
 							}}
 							error={errors.amountType}
 						>
-							<option value='201'>Select Element Classification</option>
+							<option value='' disabled>
+								Select
+							</option>
+							<option value='Fixed Value'>Fixed Value</option>
+							<option value='Rate of Salary'>Rate of Salary</option>
 						</SelectBox>
 
-						<Input
-							label='Amount'
-							required
-							placeholder='Select Date'
-							register={{ ...register('amount') }}
-							error={errors.amount}
-						/>
+						{amountTypeSelected === 'Fixed Value' ? (
+							<Input
+								label='Amount'
+								required
+								placeholder='Enter Amount'
+								register={{ ...register('amount', { required: true }) }}
+								error={errors.amount}
+								disabled={!amountTypeSelected}
+							/>
+						) : (
+							<Input
+								label={amountTypeSelected === 'Rate of Salary' ? 'rate' : '...'}
+								required
+								placeholder={
+									amountTypeSelected === 'Enter Rate' ? 'Rate' : 'Select'
+								}
+								register={{ ...register('rate', { required: true }) }}
+								error={errors.rate}
+								disabled={!amountTypeSelected}
+							/>
+						)}
 					</div>
 
 					<div className='form-row-2'>
@@ -149,7 +158,7 @@ export default function ProcessingInfo({
 						type='submit'
 						styleProp={{ width: '100%', justifyContent: 'center' }}
 					>
-						Create New Element
+						Create A New Element Link
 					</Button>
 				</div>
 			</form>

@@ -43,6 +43,8 @@ export default function ELementsForm({
 			formData.effectiveEndDate
 		).toISOString();
 
+		console.log('>>>>>>>>>>', formData);
+
 		try {
 			if (element) {
 				console.log('edit', formData);

@@ -1,3 +1,5 @@
+import moment from 'moment';
+
 export interface DataItem {
 	id: string;
 	name: string;
@@ -16,4 +18,11 @@ export const convertToDataItems = (
 		id: item.id,
 		name: item.name,
 	}));
+};
+
+export const formatDate = (value?: string) => {
+	if (!value) {
+		return moment(new Date()).format('YYYY-MM-DD');
+	}
+	return moment(value).format('YYYY-MM-DD');
 };

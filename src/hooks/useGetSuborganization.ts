@@ -1,7 +1,7 @@
 import { useGetSuborganizationsQuery } from '../store/apiService';
 import { DataItem, getDataName } from '../utils';
 
-export default function useGetSuborganizations(suborganizationId: string) {
+export default function useGetSuborganizations(suborganizationId?: string) {
 	const { data } = useGetSuborganizationsQuery();
 
 	const arr: DataItem[] = [];
@@ -10,7 +10,9 @@ export default function useGetSuborganizations(suborganizationId: string) {
 		arr.push({ id: d.id, name: d.name });
 	});
 
-	const suborganizationName = getDataName(suborganizationId, arr);
+	const suborganizationName = suborganizationId
+		? getDataName(suborganizationId, arr)
+		: '';
 
-	return { suborganizationName, suborganizationData: data };
+	return { suborganizationName, data };
 }

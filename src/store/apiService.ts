@@ -100,6 +100,9 @@ export const apiService = createApi({
 		}),
 		getGradeSteps: builder.query<GradeStep[], string>({
 			query: (id) => `grade/${id}/gradesteps`,
+			transformResponse: (response: { data: GradeStep[] }) => {
+				return response.data;
+			},
 		}),
 		getSuborganizations: builder.query<Suborganization[], void>({
 			query: () => 'suborganizations',

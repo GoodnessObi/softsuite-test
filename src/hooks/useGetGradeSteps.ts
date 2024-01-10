@@ -1,12 +1,15 @@
 import { useGetGradeStepsQuery } from '../store/apiService';
 import { DataItem, getDataName } from '../utils';
 
-export default function useGetGradeSteps(
-	selectedGradeId: string,
-	gradeStepId: string
-) {
-	const { data } = useGetGradeStepsQuery(selectedGradeId, {
-		skip: selectedGradeId === '',
+export default function useGetGradeSteps({
+	gradeId,
+	gradeStepId,
+}: {
+	gradeId: string;
+	gradeStepId?: string;
+}) {
+	const { data } = useGetGradeStepsQuery(gradeId, {
+		skip: gradeId === '',
 	});
 
 	const arr: DataItem[] = [];
@@ -15,6 +18,6 @@ export default function useGetGradeSteps(
 		arr.push({ id: d.id, name: d.name });
 	});
 
-	const gradeStepName = getDataName(gradeStepId, arr);
-	return gradeStepName;
+	const gradeStepName = gradeStepId ? getDataName(gradeStepId, arr) : '';
+	return { gradeStepName, data };
 }
