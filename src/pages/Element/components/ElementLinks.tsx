@@ -42,7 +42,7 @@ export default function ElementLinks({ data }: { data: ElementLink[] }) {
 				{data?.length === 0 ? (
 					<EmptyState text='There are no element links to display' />
 				) : (
-					<ElementLinksTable data={data} />
+					<ElementLinksTable data={data} setLinkModalOpen={setLinkModalOpen} />
 				)}
 			</div>
 

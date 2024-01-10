@@ -16,6 +16,8 @@ const schema = yup.object({
 	locationId: yup.number(),
 	departmentId: yup.number(),
 	employeeCategoryValueId: yup.number(),
+	employeeCategoryId: yup.number(),
+	employeeTypeId: yup.number(),
 	employeeTypeValueId: yup.number(),
 	jobTitleId: yup.number(),
 });
@@ -68,20 +70,19 @@ export default function StaffInfo({
 	);
 
 	const saveData = (data: any) => {
-		// employeeCategoryId
-		// employeeTypeId: yup.number().required('Employee Type ID is required'),
-		console.log('--data', data);
-		setFormData((prev) => ({ ...prev, ...data }));
-		setFormStep(linkFormSteps.stepTwo);
-	};
+		data.employeeTypeId =
+			data.employeeTypeValueId != 0 ? +lookUpIds.employeeType : 0;
+		data.employeeCategoryId =
+			data.employeeCategoryValueId != 0 ? +lookUpIds.elementCategory : 0;
 
-	const onError = (err: any) => {
-		console.log('>>>>>>>', err);
+		setFormData((prev) => ({ ...prev, ...data }));
+		console.log(data, 'heyyeyyyy');
+		setFormStep(linkFormSteps.stepTwo);
 	};
 
 	return (
 		<div>
-			<form onSubmit={handleSubmit(saveData, onError)}>
+			<form onSubmit={handleSubmit(saveData)}>
 				<div className='form__cpntainer'>
 					<div className='form-row'>
 						<Input

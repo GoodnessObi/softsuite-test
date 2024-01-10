@@ -56,13 +56,28 @@ export default function ProcessingInfo({
 
 	const submit = async (data: any, e: any) => {
 		console.log(data);
+
+		data.rate = data.amount != 0 ? 0 : data.rate;
+		data.amount = data.rate != 0 ? 0 : data.amount;
+
+		if (data.amount == 0 && data.rate == 0) {
+			console.log('errrorrrrr');
+			return;
+		}
+
+		console.log('>>>>>>>>>>>>>>>>>>>>', data);
+
 		setFormData((prev) => ({ ...prev, ...data }));
 		await submitForm(e);
 	};
 
+	const onError = (err: any) => {
+		console.log('>>>>>>>', err);
+	};
+
 	return (
 		<div>
-			<form onSubmit={handleSubmit(submit)}>
+			<form onSubmit={handleSubmit(submit, onError)}>
 				<div className='form__container'>
 					<div className='form-row-2'>
 						<SelectBox
@@ -86,7 +101,7 @@ export default function ProcessingInfo({
 								label='Amount'
 								required
 								placeholder='Enter Amount'
-								register={{ ...register('amount', { required: true }) }}
+								register={{ ...register('amount') }}
 								error={errors.amount}
 								disabled={!amountTypeSelected}
 							/>
@@ -97,7 +112,7 @@ export default function ProcessingInfo({
 								placeholder={
 									amountTypeSelected === 'Enter Rate' ? 'Rate' : 'Select'
 								}
-								register={{ ...register('rate', { required: true }) }}
+								register={{ ...register('rate') }}
 								error={errors.rate}
 								disabled={!amountTypeSelected}
 							/>

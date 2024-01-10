@@ -9,6 +9,8 @@ import { useAppSelector } from '../../../../store/hook';
 import useGetGrades from '../../../../hooks/useGetGrades';
 import useGetGradeSteps from '../../../../hooks/useGetGradeSteps';
 import useGetLookupValues from '../../../../hooks/useGetLookupValues';
+import useGetUserDefinedTypes from '../../../../hooks/useGetUserDefinedTypes';
+import Options from '../../../Elements/components/ElementsForm/Options';
 
 const schema = yup.object({
 	grade: yup.number(),
@@ -16,8 +18,8 @@ const schema = yup.object({
 	unionId: yup.number(),
 	additionalInfo: yup.array().of(
 		yup.object().shape({
-			lookupId: yup.number().required('Lookup ID is required'),
-			lookupValueId: yup.number().required('Lookup Value ID is required'),
+			lookupId: yup.number(),
+			lookupValueId: yup.number(),
 		})
 	),
 });
@@ -29,6 +31,7 @@ export default function AdditionalInfo({
 	const elementLink = useAppSelector(
 		(state) => state.elementLinks.currentElementLink
 	);
+	const userTypes = useGetUserDefinedTypes();
 
 	const {
 		handleSubmit,
@@ -46,17 +49,11 @@ export default function AdditionalInfo({
 	});
 
 	const gradeSelected = watch('grade');
-	// const suborgSelected = watch('suborganizationId');
 	const { data: grades } = useGetGrades();
 	const { data: gradeSteps } = useGetGradeSteps({
 		gradeId: gradeSelected ? `${gradeSelected}` : '',
 	});
 	const { data: unions } = useGetLookupValues(lookUpIds.union);
-	// const { data: locations } = useGetLookupValues(lookUpIds.location);
-	// const { data: employeeTypes } = useGetLookupValues(lookUpIds.employeeType);
-	// const { data: employeecategories } = useGetLookupValues(
-	// 	lookUpIds.employeeCategory
-	// );
 
 	const saveData = (data: any) => {
 		console.log('--data', data);
@@ -139,35 +136,28 @@ export default function AdditionalInfo({
 						</SelectBox>
 					</div>
 
-					{/* <div className='form-row'>
-						<SelectBox
-							label='Union'
-							placeholder='Input name'
-							id='unionId'
-							register={{
-								...register('unionId', {
-									setValueAs: (v) => +v,
-								}),
-							}}
-							error={errors.unionId}
-						>
-							<option value='201'>Select Element Classification</option>
-						</SelectBox>
-
-						<SelectBox
-							label='Union'
-							placeholder='Input name'
-							id='unionId'
-							register={{
-								...register('unionId', {
-									setValueAs: (v) => +v,
-								}),
-							}}
-							error={errors.unionId}
-						>
-							<option value='201'>Select Element Classification</option>
-						</SelectBox>
-					</div> */}
+					<div className='form-row-2 addional-assgnmen'>
+						{userTypes?.length
+							? userTypes.map((type) => (
+									<SelectBox
+										label={type.name}
+										placeholder={`Input ${type.name}`}
+										id={type.name}
+										key={type.id}
+										// {...register(
+										// 	`additionalInfo.${}.lookupId`,
+										// 	`additionalInfo.${}.lookupValueId`
+										// )}
+									>
+										<option value='' disabled>
+											Select{' '}
+										</option>
+										<Options typeId={type.id} />
+									</SelectBox>
+									// eslint-disable-next-line no-mixed-spaces-and-tabs
+							  ))
+							: 'N/A'}
+					</div>
 				</div>
 
 				<div className='form-btn__wrapper'>

@@ -56,7 +56,7 @@ const DropdownBtn = ({
 					role='button'
 					className=' danger-item'
 					onClick={() => {
-						deleteElement(item.id);
+						deleteElement(`${item.id}`);
 					}}
 				>
 					<img src={Icons['Delete']} alt='' />

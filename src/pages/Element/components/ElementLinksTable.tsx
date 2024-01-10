@@ -3,12 +3,23 @@ import Icons from '../../../assets/images';
 // import Button from '../../../components/base/Button/Button';
 import Pagination from '../../../components/base/Pagination/Pagination';
 import { ElementLink } from '../../../types/apiResponseTypes';
+import { useAppDispatch } from '../../../store/hook';
+import { useDeleteElementLinkMutation } from '../../../store/apiService';
+import { setCurrentElementLink } from '../../../store/elementLinksSlice';
 
-export default function ElementLinksTable({ data }: { data: ElementLink[] }) {
+export default function ElementLinksTable({
+	data,
+	setLinkModalOpen,
+}: {
+	data: ElementLink[];
+	setLinkModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
+}) {
 	const [items, setCurrentItems] = useState<ElementLink[]>();
 	const [itemOffset, setItemOffset] = useState(0);
 	const [pageCount, setPageCount] = useState(0);
 	const [itemsPerPage, setItemsPerPage] = useState(5);
+	const dispatch = useAppDispatch();
+	const [deleteElementLink] = useDeleteElementLinkMutation();
 
 	useEffect(() => {
 		if (data) {
@@ -86,11 +97,26 @@ export default function ElementLinksTable({ data }: { data: ElementLink[] }) {
 							</td>
 
 							<td data-name='action' className='action'>
-								<span>
+								<span
+									onClick={() => {
+										dispatch(setCurrentElementLink(item));
+										setLinkModalOpen(true);
+										// dispatch(setCurrentEditElement(user));
+										// setFormType('EDIT');
+										// setShowModal(true);
+									}}
+								>
 									<img src={Icons['Edit']} alt='' />
 								</span>
 
-								<span>
+								<span
+									onClick={() => {
+										deleteElementLink({
+											id: `${item.id}`,
+											elementId: `${item.elementId}`,
+										});
+									}}
+								>
 									<img src={Icons['Delete']} alt='' />
 								</span>
 							</td>
