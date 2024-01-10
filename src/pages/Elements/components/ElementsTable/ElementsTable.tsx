@@ -5,13 +5,17 @@ import { Element } from '../../../../types/apiResponseTypes';
 import './ElementsTable.scss';
 import moment from 'moment';
 import DropdownBtn from '../../../../components/base/DropdownBtn/DropdownBtn';
+import EmptyState from '../../../../components/base/Emptystate/EmptyState';
+import Spinner from '../../../../components/base/Spinner/Spinner';
 
 export default function ElementsTable({
 	data,
 	setIsModalOpen,
+	isLoading,
 }: {
 	data?: Element[];
 	setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
+	isLoading: boolean;
 }) {
 	const [items, setCurrentItems] = useState<Element[]>();
 	const [itemOffset, setItemOffset] = useState(0);
@@ -33,7 +37,15 @@ export default function ElementsTable({
 		}
 	};
 
-	console.log('ttttt', data);
+	if (items && items?.length <= 0) {
+		return (
+			<EmptyState
+				text='There are no elements to display'
+				styleProp={{ padding: '127px 0' }}
+			/>
+		);
+	}
+
 	return (
 		<div className='elements-table'>
 			<div className='mobile-header'>
@@ -85,32 +97,34 @@ export default function ElementsTable({
 						<th>Action</th>
 					</tr>
 				</thead>
-				<tbody>
-					{items?.map((item) => (
-						<tr key={item.id}>
-							<td data-name='name' className='itemname'>
-								{/* <Link to={`/items/${item.id}`}> */}
-								{item.name}
-								{/* </Link> */}
-							</td>
-							<td data-name='category'>{item.categoryId}</td>
-							<td data-name='classification'>{item.classificationId}</td>
-							<td data-name='status' className=''>
-								<span className={`status-span ${item.status.toLowerCase()}`}>
-									{item.status}
-								</span>
-							</td>
-							<td className='date'>
-								{moment(item?.createdAt).format('MMMM Do YYYY, h:mm:ss a')}
-							</td>
-							<td data-name='organization'>{item.modifiedBy}</td>
+				{isLoading ? (
+					<Spinner />
+				) : (
+					<tbody>
+						{items?.map((item) => (
+							<tr key={item.id}>
+								<td data-name='name' className='itemname'>
+									{item.name}
+								</td>
+								<td data-name='category'>{item.categoryValueId}</td>
+								<td data-name='classification'>{item.classificationValueId}</td>
+								<td data-name='status' className=''>
+									<span className={`status-span ${item.status.toLowerCase()}`}>
+										{item.status}
+									</span>
+								</td>
+								<td className='date'>
+									{moment(item?.createdAt).format('MMMM Do YYYY, h:mm:ss a')}
+								</td>
+								<td data-name='organization'>{item.modifiedBy}</td>
 
-							<td data-name='action' className='action'>
-								<DropdownBtn item={item} setIsModalOpen={setIsModalOpen} />
-							</td>
-						</tr>
-					))}
-				</tbody>
+								<td data-name='action' className='action'>
+									<DropdownBtn item={item} setIsModalOpen={setIsModalOpen} />
+								</td>
+							</tr>
+						))}
+					</tbody>
+				)}
 			</table>
 
 			<Pagination

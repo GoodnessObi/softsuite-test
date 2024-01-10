@@ -10,6 +10,7 @@ interface InputProps extends InputHTMLAttributes<HTMLSelectElement> {
 	children: ReactNode;
 	multiple?: boolean;
 	placeholder?: string;
+	disabled?: boolean;
 }
 
 const SelectBox: FC<InputProps> = ({

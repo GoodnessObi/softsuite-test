@@ -1,43 +1,20 @@
 import { useEffect, useState } from 'react';
-// import { useAppDispatch, useAppSelector } from '../../../../store/hook';
-// import { clearCurrentElementLink } from '../../../../store/elementLinksSlice';
 import { linkFormSteps } from '../../../../lib/data';
 import Progress from './ProgressBar/Progressbar';
 import StaffInfo from './StaffInfo';
 import { useAppDispatch, useAppSelector } from '../../../../store/hook';
-import { FormElementLinkType } from '../../../../types/apiResponseTypes';
+import {
+	ElementLink,
+	FormElementLinkType,
+} from '../../../../types/apiResponseTypes';
 import { clearCurrentElementLink } from '../../../../store/elementLinksSlice';
 import AdditionalInfo from './AdditionalInfo';
 import ProcessingInfo from './ProcessingInfo';
-
-const defaultState = {
-	elementId: 0,
-	suborganizationId: 0,
-	name: '',
-	locationId: 0,
-	departmentId: 0,
-	employeeCategoryId: 0,
-	employeeCategoryValueId: 0,
-	employeeTypeId: 0,
-	employeeTypeValueId: 0,
-	jobTitleId: 0,
-	grade: 0,
-	gradeStep: 0,
-	unionId: 0,
-	amountType: '',
-	amount: 0,
-	rate: 0,
-	effectiveStartDate: '',
-	effectiveEndDate: '',
-	status: '',
-	automate: '',
-	additionalInfo: [
-		{
-			lookupId: 0,
-			lookupValueId: 0,
-		},
-	],
-};
+import {
+	useAddElementLinkMutation,
+	useUpdateElementLinkMutation,
+} from '../../../../store/apiService';
+import { useParams } from 'react-router-dom';
 
 export default function ELementLinkForm({
 	setLinkModalOpen,
@@ -45,13 +22,14 @@ export default function ELementLinkForm({
 	setLinkModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
 	const dispatch = useAppDispatch();
+	const { id } = useParams() as { id: string };
 	const elementLink = useAppSelector(
 		(state) => state.elementLinks.currentElementLink
 	);
-	const [formStep, setFormStep] = useState(linkFormSteps.stepThree);
-	const [formData, setFormData] = useState<FormElementLinkType>(defaultState);
-	// const [addElement, isSuccess] = useCreateElementMutation();
-	// const [updateElement, updateSuccessful] = useUpdateElementMutation();
+	const [formStep, setFormStep] = useState(linkFormSteps.stepOne);
+	const [formData, setFormData] = useState<FormElementLinkType>();
+	const [addElementLink, isSuccess] = useAddElementLinkMutation();
+	const [updateElementLink, updateSuccessful] = useUpdateElementLinkMutation();
 
 	useEffect(() => {
 		if (elementLink) {
@@ -70,46 +48,42 @@ export default function ELementLinkForm({
 		if (!formData) {
 			return;
 		}
-		// formData.modifiedBy = 'Goodness Obi';
-
-		// formData['effectiveStartDate'] = new Date(
-		// 	formData.effectiveStartDate
-		// ).toISOString();
-		// formData['effectiveEndDate'] = new Date(
-		// 	formData.effectiveEndDate
-		// ).toISOString();
+		formData.elementId = +id;
+		formData.modifiedBy = 'Goodness Obi';
+		formData['effectiveStartDate'] = formData.effectiveStartDate
+			? new Date(formData.effectiveStartDate).toISOString()
+			: '';
+		formData['effectiveEndDate'] = formData.effectiveEndDate
+			? new Date(formData.effectiveEndDate).toISOString()
+			: '';
 
 		try {
 			if (elementLink) {
 				console.log('edit', formData);
-				// updateElement(formData as unknown as Element);
+				updateElementLink(formData as unknown as ElementLink);
 
-				// if (updateSuccessful) {
-				// 	closeModal();
-				// }
+				if (updateSuccessful) {
+					closeModal();
+				}
 			} else {
 				console.log(formData);
-				// addElement(formData);
+				addElementLink(formData as unknown as ElementLink);
 
-				// if (isSuccess) {
-				// 	closeModal();
-				// }
+				if (isSuccess) {
+					closeModal();
+				}
 			}
 		} catch (error) {
-			console.error('An error occurred while processing the element:', error);
+			console.error(
+				'An error occurred while processing the element link:',
+				error
+			);
 		}
 	};
 
 	return (
 		<>
-			<h1 className='page-title'>
-				Create Element Link
-				{/* {formStep === linkFormSteps.stepOne
-					? 'Staff Information'
-					: formStep === linkFormSteps.stepTwo
-					? 'Additional Information'
-					: 'Processing Information'} */}
-			</h1>
+			<h1 className='page-title'>Create Element Link</h1>
 			<Progress
 				page={
 					formStep === linkFormSteps.stepOne
@@ -123,22 +97,16 @@ export default function ELementLinkForm({
 				<StaffInfo
 					setFormStep={setFormStep}
 					closeModal={closeModal}
-					values={formData}
 					setFormData={setFormData}
 				/>
 			)}
 			{formStep === linkFormSteps.stepTwo && (
-				<AdditionalInfo
-					setFormStep={setFormStep}
-					values={formData}
-					setFormData={setFormData}
-				/>
+				<AdditionalInfo setFormStep={setFormStep} setFormData={setFormData} />
 			)}
 			{formStep === linkFormSteps.stepThree && (
 				<ProcessingInfo
 					setFormStep={setFormStep}
 					submitForm={handleSubmit}
-					values={formData}
 					setFormData={setFormData}
 				/>
 			)}

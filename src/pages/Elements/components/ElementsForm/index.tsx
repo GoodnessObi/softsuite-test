@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import ElementDetails from './ElementDetails';
 import AdditonalDetails from './AdditonalDetails';
 import Progress from './ProgressBar/Progressbar';
@@ -11,25 +11,6 @@ import {
 import { useAppDispatch, useAppSelector } from '../../../../store/hook';
 import { clearCurrentElement } from '../../../../store/elementsSlice';
 
-const defaultState: FormElementType = {
-	name: '',
-	description: '',
-	payRunId: 0,
-	payRunValueId: 0,
-	classificationId: 0,
-	classificationValueId: 0,
-	categoryId: 0,
-	categoryValueId: 0,
-	reportingName: '',
-	processingType: '',
-	status: '',
-	prorate: '',
-	effectiveStartDate: new Date().toISOString(),
-	effectiveEndDate: new Date().toISOString(),
-	selectedMonths: [],
-	payFrequency: '',
-};
-
 export default function ELementsForm({
 	setIsModalOpen,
 }: {
@@ -38,15 +19,9 @@ export default function ELementsForm({
 	const dispatch = useAppDispatch();
 	const element = useAppSelector((state) => state.elements.currentElement);
 	const [formStep, setFormStep] = useState(formSteps.stepOne);
-	const [formData, setFormData] = useState<FormElementType>(defaultState);
+	const [formData, setFormData] = useState<FormElementType>();
 	const [addElement, isSuccess] = useCreateElementMutation();
 	const [updateElement, updateSuccessful] = useUpdateElementMutation();
-
-	useEffect(() => {
-		if (element) {
-			setFormData({ ...element });
-		}
-	}, [element]);
 
 	const closeModal = () => {
 		setIsModalOpen(false);
@@ -68,6 +43,8 @@ export default function ELementsForm({
 			formData.effectiveEndDate
 		).toISOString();
 
+		console.log('>>>>>>>>>>', formData);
+
 		try {
 			if (element) {
 				console.log('edit', formData);
@@ -77,7 +54,7 @@ export default function ELementsForm({
 					closeModal();
 				}
 			} else {
-				console.log(formData);
+				console.log(formData, 'adddddddddddd');
 				addElement(formData);
 
 				if (isSuccess) {
@@ -101,7 +78,6 @@ export default function ELementsForm({
 				<ElementDetails
 					setFormStep={setFormStep}
 					closeModal={closeModal}
-					values={formData}
 					setFormData={setFormData}
 				/>
 			)}
@@ -109,7 +85,6 @@ export default function ELementsForm({
 				<AdditonalDetails
 					setFormStep={setFormStep}
 					submitForm={handleSubmit}
-					values={formData}
 					setFormData={setFormData}
 				/>
 			)}

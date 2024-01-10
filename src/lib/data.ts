@@ -111,3 +111,17 @@ export const monthOptions = [
 	{ value: 'November', label: 'November' },
 	{ value: 'December', label: 'December' },
 ];
+
+export const lookUpIds = {
+	elementCategory: '1',
+	elementClassification: '2',
+	employeeCategory: '3',
+	employeeType: '4',
+	payRun: '5',
+	jobTitle: '6',
+	location: '7',
+	union: '8',
+	housing: '9',
+	wardrobe: '10',
+	security: '11',
+};

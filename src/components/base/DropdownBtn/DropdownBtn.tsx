@@ -40,7 +40,6 @@ const DropdownBtn = ({
 					onClick={() => {
 						dispatch(setCurrentElement(item));
 						setIsModalOpen(true);
-						console.log('jhdfhjfj');
 						// dispatch(setCurrentEditElement(user));
 						// setFormType('EDIT');
 						// setShowModal(true);
@@ -57,8 +56,7 @@ const DropdownBtn = ({
 					role='button'
 					className=' danger-item'
 					onClick={() => {
-						console.log(item.id, 'deleteee');
-						deleteElement(item.id);
+						deleteElement(`${item.id}`);
 					}}
 				>
 					<img src={Icons['Delete']} alt='' />

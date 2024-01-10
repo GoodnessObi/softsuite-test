@@ -1,110 +1,88 @@
 import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { useEffect } from 'react';
 import { Input, SelectBox } from '../../../../components/base/Form';
 import Button from '../../../../components/base/Button/Button';
-import { linkFormSteps } from '../../../../lib/data';
+import { linkFormSteps, lookUpIds } from '../../../../lib/data';
 import { FormElementLinkType } from '../../../../types/apiResponseTypes';
+import { useAppSelector } from '../../../../store/hook';
+import useGetSuborganizations from '../../../../hooks/useGetSuborganization';
+import useGetDepartments from '../../../../hooks/useGetDepartments';
+import useGetLookupValues from '../../../../hooks/useGetLookupValues';
+
+const schema = yup.object({
+	name: yup.string().required('Name is required'),
+	suborganizationId: yup.number(),
+	locationId: yup.number(),
+	departmentId: yup.number(),
+	employeeCategoryValueId: yup.number(),
+	employeeCategoryId: yup.number(),
+	employeeTypeId: yup.number(),
+	employeeTypeValueId: yup.number(),
+	jobTitleId: yup.number(),
+});
 
 export type FormProps = {
 	setFormStep: React.Dispatch<React.SetStateAction<string>>;
 	closeModal: () => void;
-	setFormData: React.Dispatch<React.SetStateAction<FormElementLinkType>>;
-	values: FormElementLinkType;
+	setFormData: React.Dispatch<
+		React.SetStateAction<FormElementLinkType | undefined>
+	>;
 };
 
 export default function StaffInfo({
 	setFormStep,
 	closeModal,
 	setFormData,
-	values,
 }: FormProps) {
-	const schema = yup.object({
-		id: yup.string().required('ID is required'),
-		name: yup.string().required('Name is required'),
-		// elementId: yup.number().required('Element ID is required'),
-		suborganizationId: yup.number().required('Suborganization ID is required'),
-		locationId: yup.number().required('Location ID is required'),
-		departmentId: yup.number().required('Department ID is required'),
-		employeeCategoryId: yup
-			.number()
-			.required('Employee Category ID is required'),
-		// employeeCategoryValueId: yup
-		// 	.number()
-		// 	.required('Employee Category Value ID is required'),
-		employeeTypeId: yup.number().required('Employee Type ID is required'),
-		employeeTypeValueId: yup
-			.number()
-			.required('Employee Type Value ID is required'),
-		jobTitleId: yup.number().required('Job Title ID is required'),
-		// grade: yup.number().required('Grade is required'),
-		// gradeStep: yup.number().required('Grade Step is required'),
-		// unionId: yup.number().required('Union ID is required'),
-		// amountType: yup.string().required('Amount Type is required'),
-		// amount: yup.number().required('Amount is required'),
-		// rate: yup.number().required('Rate is required'),
-		// effectiveStartDate: yup
-		// 	.string()
-		// 	.required('Effective Start Date is required'),
-		// effectiveEndDate: yup.string().required('Effective End Date is required'),
-		// status: yup.string().required('Status is required'),
-		// automate: yup.string().required('Automate is required'),
-		// additionalInfo: yup
-		// 	.array()
-		// 	.of(
-		// 		yup.object().shape({
-		// 			lookupId: yup.number().required('Lookup ID is required'),
-		// 			lookupValueId: yup.number().required('Lookup Value ID is required'),
-		// 		})
-		// 	)
-		// 	.required('Additional Info is required'),
-	});
+	const elementLink = useAppSelector(
+		(state) => state.elementLinks.currentElementLink
+	);
 
 	const {
 		handleSubmit,
 		register,
-		// watch,
-		setValue,
+		watch,
 		formState: { errors },
 	} = useForm({
 		resolver: yupResolver(schema),
+		defaultValues: {
+			name: elementLink?.name ?? '',
+			suborganizationId: elementLink?.suborganizationId ?? 0,
+			departmentId: elementLink?.departmentId ?? 0,
+			jobTitleId: elementLink?.jobTitleId ?? 0,
+			locationId: elementLink?.locationId ?? 0,
+			employeeCategoryValueId: elementLink?.employeeCategoryValueId ?? 0,
+			employeeTypeValueId: elementLink?.employeeTypeValueId ?? 0,
+		},
 	});
 
-	useEffect(() => {
-		const {
-			name,
-			suborganizationId,
-			locationId,
-			departmentId,
-			employeeCategoryId,
-			jobTitleId,
-			employeeTypeValueId,
-		} = values;
-
-		setValue('name', name ?? '');
-		setValue('suborganizationId', suborganizationId ?? 0);
-		setValue('locationId', locationId ?? 0);
-		setValue('departmentId', departmentId ?? 0);
-		setValue('employeeCategoryId', employeeCategoryId ?? 0);
-		setValue('jobTitleId', jobTitleId ?? 0);
-		setValue('employeeTypeValueId', employeeTypeValueId ?? 0);
-		// eslint-disable-next-line
-	}, [values]);
+	const suborgSelected = watch('suborganizationId');
+	const { data: subOrganizations } = useGetSuborganizations();
+	const { data: departments } = useGetDepartments({
+		orgId: suborgSelected ? suborgSelected.toString() : '',
+	});
+	const { data: jobs } = useGetLookupValues(lookUpIds.jobTitle);
+	const { data: locations } = useGetLookupValues(lookUpIds.location);
+	const { data: employeeTypes } = useGetLookupValues(lookUpIds.employeeType);
+	const { data: employeecategories } = useGetLookupValues(
+		lookUpIds.employeeCategory
+	);
 
 	const saveData = (data: any) => {
-		console.log('--data', data);
-		setFormData((prev) => ({ ...prev, ...data }));
-		setFormStep(linkFormSteps.stepTwo);
-	};
+		data.employeeTypeId =
+			data.employeeTypeValueId != 0 ? +lookUpIds.employeeType : 0;
+		data.employeeCategoryId =
+			data.employeeCategoryValueId != 0 ? +lookUpIds.elementCategory : 0;
 
-	const onError = (err: any) => {
-		console.log('>>>>>>>', err);
+		setFormData((prev) => ({ ...prev, ...data }));
+		console.log(data, 'heyyeyyyy');
+		setFormStep(linkFormSteps.stepTwo);
 	};
 
 	return (
 		<div>
-			<form onSubmit={handleSubmit(saveData, onError)}>
+			<form onSubmit={handleSubmit(saveData)}>
 				<div className='form__cpntainer'>
 					<div className='form-row'>
 						<Input
@@ -128,7 +106,14 @@ export default function StaffInfo({
 							}}
 							error={errors.suborganizationId}
 						>
-							<option value='201'>Select Element Classification</option>
+							<option value='' disabled>
+								Select{' '}
+							</option>
+							{subOrganizations?.map((item) => (
+								<option key={item.id} value={item.id}>
+									{item.name}
+								</option>
+							))}
 						</SelectBox>
 
 						<SelectBox
@@ -140,8 +125,16 @@ export default function StaffInfo({
 								}),
 							}}
 							error={errors.departmentId}
+							disabled={!suborgSelected}
 						>
-							<option value='3'>Select Element Classification</option>
+							<option value='' disabled>
+								Select{' '}
+							</option>
+							{departments?.map((item) => (
+								<option key={item.id} value={item.id}>
+									{item.name}
+								</option>
+							))}
 						</SelectBox>
 					</div>
 
@@ -156,11 +149,18 @@ export default function StaffInfo({
 							}}
 							error={errors.jobTitleId}
 						>
-							<option value='3'>Select Element Classification</option>
+							<option value='' disabled>
+								Select{' '}
+							</option>
+							{jobs?.map((item) => (
+								<option key={item.id} value={item.id}>
+									{item.name}
+								</option>
+							))}
 						</SelectBox>
 						<SelectBox
-							label='category'
-							id='categoryId'
+							label='Location'
+							id='locationId'
 							register={{
 								...register('locationId', {
 									setValueAs: (v) => +v,
@@ -168,7 +168,14 @@ export default function StaffInfo({
 							}}
 							error={errors.locationId}
 						>
-							<option value='401'>Select Element Classification</option>
+							<option value='' disabled>
+								Select{' '}
+							</option>
+							{locations?.map((item) => (
+								<option key={item.id} value={item.id}>
+									{item.name}
+								</option>
+							))}
 						</SelectBox>
 					</div>
 
@@ -183,20 +190,34 @@ export default function StaffInfo({
 							}}
 							error={errors.employeeTypeValueId}
 						>
-							<option value='3'>Select Element Classification</option>
+							<option value='' disabled>
+								Select{' '}
+							</option>
+							{employeeTypes?.map((item) => (
+								<option key={item.id} value={item.id}>
+									{item.name}
+								</option>
+							))}
 						</SelectBox>
 
 						<SelectBox
 							label='Employee Category'
 							id='categoryId'
 							register={{
-								...register('employeeCategoryId', {
+								...register('employeeCategoryValueId', {
 									setValueAs: (v) => +v,
 								}),
 							}}
-							error={errors.employeeCategoryId}
+							error={errors.employeeCategoryValueId}
 						>
-							<option value='401'>Select Element Classification</option>
+							<option value='' disabled>
+								Select{' '}
+							</option>
+							{employeecategories?.map((item) => (
+								<option key={item.id} value={item.id}>
+									{item.name}
+								</option>
+							))}
 						</SelectBox>
 					</div>
 				</div>

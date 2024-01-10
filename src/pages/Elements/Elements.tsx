@@ -51,11 +51,13 @@ export default function Elements() {
 					</Button>
 				</div>
 			</div>
-			{isLoading ? (
-				<div>loading.............</div>
-			) : (
-				<ElementsTable data={data} setIsModalOpen={setIsModalOpen} />
-			)}
+
+			<ElementsTable
+				data={data}
+				setIsModalOpen={setIsModalOpen}
+				isLoading={isLoading}
+			/>
+
 			{isModalOpen && (
 				<CenterModal>
 					<ELementsForm setIsModalOpen={setIsModalOpen} />

@@ -1,51 +1,59 @@
-import { useEffect } from 'react';
 import { FormProps } from './StaffInfo';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
-import { linkFormSteps } from '../../../../lib/data';
+import { linkFormSteps, lookUpIds } from '../../../../lib/data';
 import { SelectBox } from '../../../../components/base/Form';
 import Button from '../../../../components/base/Button/Button';
+import { useAppSelector } from '../../../../store/hook';
+import useGetGrades from '../../../../hooks/useGetGrades';
+import useGetGradeSteps from '../../../../hooks/useGetGradeSteps';
+import useGetLookupValues from '../../../../hooks/useGetLookupValues';
+import useGetUserDefinedTypes from '../../../../hooks/useGetUserDefinedTypes';
+import Options from '../../../Elements/components/ElementsForm/Options';
+
+const schema = yup.object({
+	grade: yup.number(),
+	gradeStep: yup.number(),
+	unionId: yup.number(),
+	additionalInfo: yup.array().of(
+		yup.object().shape({
+			lookupId: yup.number(),
+			lookupValueId: yup.number(),
+		})
+	),
+});
 
 export default function AdditionalInfo({
 	setFormStep,
 	setFormData,
-	values,
 }: Omit<FormProps, 'closeModal'>) {
-	const schema = yup.object({
-		grade: yup.number().required('Grade is required'),
-		gradeStep: yup.number().required('Grade Step is required'),
-		unionId: yup.number().required('Union ID is required'),
-		additionalInfo: yup
-			.array()
-			.of(
-				yup.object().shape({
-					lookupId: yup.number().required('Lookup ID is required'),
-					lookupValueId: yup.number().required('Lookup Value ID is required'),
-				})
-			)
-			.required('Additional Info is required'),
-	});
+	const elementLink = useAppSelector(
+		(state) => state.elementLinks.currentElementLink
+	);
+	const userTypes = useGetUserDefinedTypes();
 
 	const {
 		handleSubmit,
 		register,
-		// watch,
-		setValue,
+		watch,
 		formState: { errors },
 	} = useForm({
 		resolver: yupResolver(schema),
+		defaultValues: {
+			grade: elementLink?.grade ?? 0,
+			gradeStep: elementLink?.gradeStep ?? 0,
+			unionId: elementLink?.unionId ?? 0,
+			additionalInfo: elementLink?.additionalInfo ?? [],
+		},
 	});
 
-	useEffect(() => {
-		const { grade, gradeStep, unionId, additionalInfo } = values;
-
-		setValue('grade', grade ?? 0);
-		setValue('gradeStep', gradeStep ?? 0);
-		setValue('unionId', unionId ?? 0);
-		setValue('additionalInfo', additionalInfo ?? []);
-		// eslint-disable-next-line
-	}, [values]);
+	const gradeSelected = watch('grade');
+	const { data: grades } = useGetGrades();
+	const { data: gradeSteps } = useGetGradeSteps({
+		gradeId: gradeSelected ? `${gradeSelected}` : '',
+	});
+	const { data: unions } = useGetLookupValues(lookUpIds.union);
 
 	const saveData = (data: any) => {
 		console.log('--data', data);
@@ -73,7 +81,14 @@ export default function AdditionalInfo({
 							}}
 							error={errors.grade}
 						>
-							<option value='201'>Select Element Classification</option>
+							<option value='' disabled>
+								Select{' '}
+							</option>
+							{grades?.map((item) => (
+								<option key={item.id} value={item.id}>
+									{item.name}
+								</option>
+							))}
 						</SelectBox>
 
 						<SelectBox
@@ -85,8 +100,16 @@ export default function AdditionalInfo({
 								}),
 							}}
 							error={errors.gradeStep}
+							disabled={!gradeSelected}
 						>
-							<option value='3'>Select Element Classification</option>
+							<option value='' disabled>
+								Select{' '}
+							</option>
+							{gradeSteps?.map((item) => (
+								<option key={item.id} value={item.id}>
+									{item.name}
+								</option>
+							))}
 						</SelectBox>
 					</div>
 
@@ -102,38 +125,38 @@ export default function AdditionalInfo({
 							}}
 							error={errors.unionId}
 						>
-							<option value='201'>Select Element Classification</option>
+							<option value='' disabled>
+								Select{' '}
+							</option>
+							{unions?.map((item) => (
+								<option key={item.id} value={item.id}>
+									{item.name}
+								</option>
+							))}
 						</SelectBox>
 					</div>
 
-					<div className='form-row'>
-						<SelectBox
-							label='Union'
-							placeholder='Input name'
-							id='unionId'
-							register={{
-								...register('unionId', {
-									setValueAs: (v) => +v,
-								}),
-							}}
-							error={errors.unionId}
-						>
-							<option value='201'>Select Element Classification</option>
-						</SelectBox>
-
-						<SelectBox
-							label='Union'
-							placeholder='Input name'
-							id='unionId'
-							register={{
-								...register('unionId', {
-									setValueAs: (v) => +v,
-								}),
-							}}
-							error={errors.unionId}
-						>
-							<option value='201'>Select Element Classification</option>
-						</SelectBox>
+					<div className='form-row-2 addional-assgnmen'>
+						{userTypes?.length
+							? userTypes.map((type) => (
+									<SelectBox
+										label={type.name}
+										placeholder={`Input ${type.name}`}
+										id={type.name}
+										key={type.id}
+										// {...register(
+										// 	`additionalInfo.${}.lookupId`,
+										// 	`additionalInfo.${}.lookupValueId`
+										// )}
+									>
+										<option value='' disabled>
+											Select{' '}
+										</option>
+										<Options typeId={type.id} />
+									</SelectBox>
+									// eslint-disable-next-line no-mixed-spaces-and-tabs
+							  ))
+							: 'N/A'}
 					</div>
 				</div>
 

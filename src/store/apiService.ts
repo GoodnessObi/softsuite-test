@@ -5,6 +5,7 @@ import {
 	ElementLink,
 	Grade,
 	GradeStep,
+	LookUp,
 	LookUpValue,
 	Suborganization,
 } from '../types/apiResponseTypes';
@@ -99,6 +100,9 @@ export const apiService = createApi({
 		}),
 		getGradeSteps: builder.query<GradeStep[], string>({
 			query: (id) => `grade/${id}/gradesteps`,
+			transformResponse: (response: { data: GradeStep[] }) => {
+				return response.data;
+			},
 		}),
 		getSuborganizations: builder.query<Suborganization[], void>({
 			query: () => 'suborganizations',
@@ -114,6 +118,11 @@ export const apiService = createApi({
 		}),
 
 		// Include endpoints from lookupApi
+		getLookups: builder.query<LookUp[], void>({
+			query: () => `lookups`,
+			transformResponse: (response: { data: LookUp[] }) => response.data,
+		}),
+
 		getLookupValues: builder.query<LookUpValue[], string>({
 			query: (id) => `lookups/${id}/lookupvalues`,
 			// transformResponse: (response: LookUpValue) => response
@@ -142,5 +151,6 @@ export const {
 	useGetDepartmentsQuery,
 
 	//lookup
+	useGetLookupsQuery,
 	useGetLookupValuesQuery,
 } = apiService;

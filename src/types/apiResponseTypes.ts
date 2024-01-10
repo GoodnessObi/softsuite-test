@@ -1,5 +1,5 @@
 export type Element = {
-	id: string;
+	id: number;
 	name: string;
 	description: string;
 	payRunId: number;
@@ -23,7 +23,7 @@ export type Element = {
 export type FormElementType = Omit<Element, 'id' | 'createdAt'>;
 
 export type ElementLink = {
-	id: string;
+	id: number;
 	name: string;
 	elementId: number;
 	suborganizationId: number;
@@ -42,6 +42,7 @@ export type ElementLink = {
 	rate: number;
 	effectiveStartDate: string;
 	effectiveEndDate: string;
+	modifiedBy?: string;
 	status: string;
 	automate: string;
 	additionalInfo: {
