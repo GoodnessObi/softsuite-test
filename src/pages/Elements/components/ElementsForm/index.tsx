@@ -67,9 +67,10 @@ export default function ELementsForm({
 	return (
 		<>
 			<h1 className='page-title'>
-				{formStep === formSteps.stepOne
+				{element?.id ? 'Edit Element' : 'Create Element'}
+				{/* {formStep === formSteps.stepOne
 					? 'Element Details'
-					: 'Additional Details'}
+					: 'Additional Details'} */}
 			</h1>
 			<Progress page={formStep === formSteps.stepOne ? 1 : 2} />
 			{formStep === formSteps.stepOne && (

@@ -17,6 +17,7 @@ export default function TopNav({ toggleNav, navIsOpen }: NavbarProps) {
 			<div className='navbar__items'>
 				<div className='navbar__orgs'>
 					<Dropdown
+						className='top-nav'
 						title={
 							<>
 								<img src={Icons['Home']} alt='' />

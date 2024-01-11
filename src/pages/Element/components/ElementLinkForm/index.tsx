@@ -83,7 +83,9 @@ export default function ELementLinkForm({
 
 	return (
 		<>
-			<h1 className='page-title'>Create Element Link</h1>
+			<h1 className='page-title'>
+				{elementLink?.id ? 'Edit Element Link' : 'Create Element Link'}
+			</h1>
 			<Progress
 				page={
 					formStep === linkFormSteps.stepOne

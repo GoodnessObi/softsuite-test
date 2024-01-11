@@ -173,7 +173,9 @@ export default function ProcessingInfo({
 						type='submit'
 						styleProp={{ width: '100%', justifyContent: 'center' }}
 					>
-						Create A New Element Link
+						{elementLink?.id
+							? 'Update Element Link'
+							: 'Create A New Element Link'}
 					</Button>
 				</div>
 			</form>
