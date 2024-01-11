@@ -2,8 +2,12 @@
 @import '../../../styles/breakpoints';
 
 .router {
-	display: flex;
-	padding: 8px 0;
+	display: none;
+	padding: 10px 0;
+
+	@include sm-breakpoint {
+		display: flex;
+	}
 
 	a {
 		text-decoration: none;

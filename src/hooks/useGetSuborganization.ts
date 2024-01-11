@@ -14,5 +14,5 @@ export default function useGetSuborganizations(suborganizationId?: string) {
 		? getDataName(suborganizationId, arr)
 		: '';
 
-	return { suborganizationName, data };
+	return { suborganizationName, data: arr };
 }

@@ -2,9 +2,9 @@
 @import '../../styles/breakpoints';
 
 .element {
-	margin: 32px;
+	// margin: 32px;
 	background-color: var.$white;
-	padding: 32px;
+	padding: 24px;
 
 	&__detail {
 		border: 1px solid #d4d8e2;
@@ -12,6 +12,7 @@
 		grid-template-rows: repeat(7, 1fr);
 		grid-gap: 1px;
 		background-color: #d4d8e2;
+		margin-bottom: 84px;
 
 		@include sm-breakpoint {
 			grid-template-columns: repeat(2, 1fr);
