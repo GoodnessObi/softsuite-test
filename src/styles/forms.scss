@@ -1,8 +1,15 @@
+@use './variables' as var;
+@import './breakpoints';
+
 .form-row-2 {
 	display: grid;
-	grid-template-columns: 1fr 1fr;
+	grid-template-columns: 1fr;
 	gap: 24px;
 	margin-bottom: 24px;
+
+	@include sm-breakpoint {
+		grid-template-columns: 1fr 1fr;
+	}
 }
 
 .form-row {
@@ -11,7 +18,11 @@
 
 .form-btn__wrapper {
 	display: grid;
-	grid-template-columns: 1fr 1fr;
+	grid-template-columns: 1fr;
 	gap: 24px;
 	margin-top: 40px;
+
+	@include sm-breakpoint {
+		grid-template-columns: 1fr 1fr;
+	}
 }

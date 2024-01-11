@@ -22,6 +22,10 @@ export function PageLayout() {
 				<PageRouter pages={routes} />
 				<Outlet />
 			</div>
+			<footer className='bottom'>
+				<p>&copy; 2024 SoftSuite. All rights reserved</p>
+				<p>support@softsuite.com</p>
+			</footer>
 		</div>
 	);
 }

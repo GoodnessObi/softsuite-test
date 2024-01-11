@@ -25,15 +25,15 @@
 		overflow: hidden;
 	}
 
-	&:hover {
-		.dropdown {
-			&__btn .icon {
-				transform: rotate(180deg);
-			}
+	// &:hover {
+	// 	.dropdown {
+	// 		&__btn .icon {
+	// 			transform: rotate(180deg);
+	// 		}
 
-			&__list {
-				display: block;
-			}
-		}
-	}
+	// 		&__list {
+	// 			display: block;
+	// 		}
+	// 	}
+	// }
 }
