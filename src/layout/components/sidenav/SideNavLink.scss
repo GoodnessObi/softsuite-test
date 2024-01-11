@@ -28,10 +28,6 @@
 		}
 	}
 
-	&__icon {
-		color: red;
-	}
-
 	&.active {
 		background-color: var.$color-secondary;
 		color: var.$white;

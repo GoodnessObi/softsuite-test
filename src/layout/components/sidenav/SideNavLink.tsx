@@ -20,7 +20,11 @@ export default function SideNavLink({ link }: { link: NavLinkType }) {
 			{link.label}
 		</NavLink>
 	) : (
-		<div className={`navlink-dropdown ${isOpen ? 'active' : ''}`}>
+		<div
+			className={`navlink-dropdown ${
+				link.label.includes('Element') ? 'active' : ''
+			} ${isOpen ? 'active' : ''}`}
+		>
 			<button className='navlink__btn' onClick={toggleOpen}>
 				<span>
 					{link.icon && (

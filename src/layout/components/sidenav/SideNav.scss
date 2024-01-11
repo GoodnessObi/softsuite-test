@@ -14,6 +14,7 @@
 	transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
 	transition-duration: 150ms;
 	padding-bottom: 58px;
+	padding-top: 30px;
 
 	&::-webkit-scrollbar {
 		width: 2px;
@@ -37,6 +38,7 @@
 		max-width: var.$sidenav-width;
 		top: var.$navbar-height-web;
 		height: calc(100vh - var.$navbar-height-web);
+		// padding-top: 30px;
 	}
 
 	&.open {

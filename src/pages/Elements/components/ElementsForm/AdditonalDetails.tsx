@@ -174,7 +174,7 @@ export default function AdditonalDetails({
 						type='submit'
 						styleProp={{ width: '100%', justifyContent: 'center' }}
 					>
-						Create New Element
+						{element?.id ? 'Update Element' : 'Create New Element'}
 					</Button>
 				</div>
 			</form>
