@@ -41,7 +41,7 @@ export default function ElementLinksTable({
 	const [items, setCurrentItems] = useState<ElementLink[]>();
 	const [itemOffset, setItemOffset] = useState(0);
 	const [pageCount, setPageCount] = useState(0);
-	const [itemsPerPage, setItemsPerPage] = useState(5);
+	const [itemsPerPage, setItemsPerPage] = useState(10);
 	const dispatch = useAppDispatch();
 	const [deleteElementLink] = useDeleteElementLinkMutation();
 	const { data: subOrganizations } = useGetSuborganizations();
