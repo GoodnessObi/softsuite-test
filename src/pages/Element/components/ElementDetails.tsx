@@ -1,8 +1,21 @@
 import Icons from '../../../assets/images';
+import useGetLookupValues from '../../../hooks/useGetLookupValues';
+import { lookUpIds } from '../../../lib/data';
 import { Element } from '../../../types/apiResponseTypes';
 import { Link } from 'react-router-dom';
+import { formatDate, getDataName } from '../../../utils';
 
 export default function ElementDetails({ element }: { element: Element }) {
+	const { data: classifications } = useGetLookupValues(
+		lookUpIds.elementClassification
+	);
+	const { data: categoriesData } = useGetLookupValues(
+		lookUpIds.elementCategory
+	);
+	const { data: payruns } = useGetLookupValues(lookUpIds.payRun);
+
+	console.log('eeee', element);
+
 	return (
 		<div>
 			<div className='element__back'>
@@ -20,42 +33,47 @@ export default function ElementDetails({ element }: { element: Element }) {
 				<div className='element__item'>
 					<p className='element__label'>Element Classification</p>
 					<p className='element__text'>
-						{/* {
-							useGetElementClassification(
-								element?.classificationId,
-								elementClassificationData,
-								isSuccess
-							).elementClassificationName
-						} */}
+						{getDataName(
+							element.classificationValueId.toString(),
+							classifications
+						)}
 					</p>
 				</div>
 				<div className='element__item'>
 					<p className='element__label'>ELEMENT category</p>
 					<p className='element__text'>
-						{/* {
-							useGetElementCategory(
-								element?.categoryValueId,
-								elementCategoryData
-							).elementCategoryName
-						} */}
+						{getDataName(element.categoryValueId.toString(), categoriesData)}
 					</p>
 				</div>
 				<div className='element__item'>
 					<p className='element__label'>payrun</p>
 					<p className='element__text'>
-						{/* {useGetPayrun(element?.payRunId, payrunData).payrunName} */}
+						{getDataName(element.payRunValueId.toString(), payruns)}
 					</p>
 				</div>
 				<div className='element__item'>
+					<p className='element__label'>Description</p>
+					<p className='element__text'>{element?.description}</p>
+				</div>
+				<div className='element__item'>
+					<p className='element__label'>Reporting Name</p>
+					<p className='element__text'>{element?.reportingName}</p>
+				</div>
+				<div className='element__item'>
 					<p className='element__label'>Effective Start Date</p>
-					<p className='element__text'>{element?.effectiveStartDate}</p>
+					<p className='element__text'>
+						{formatDate(element?.effectiveStartDate, 'DD-MM-YYYY')}
+					</p>
 				</div>
 				<div className='element__item'>
 					<p className='element__label'>Effective END Date</p>
-					<p className='element__text'>{element?.effectiveEndDate}</p>
+					<p className='element__text'>
+						{' '}
+						{formatDate(element?.effectiveEndDate, 'DD-MM-YYYY')}
+					</p>
 				</div>
 				<div className='element__item'>
-					<p className='element__label'>PROCESSING TYPE</p>
+					<p className='element__label'>processing Type</p>
 					<p className='element__text'>
 						{element?.processingType === '1'
 							? 'Open'
@@ -76,7 +94,7 @@ export default function ElementDetails({ element }: { element: Element }) {
 				</div>
 				<div className='element__item'>
 					<p className='element__label'>Pay Months</p>
-					<p className='element__text'>{element?.selectedMonths}</p>
+					<p className='element__text'>{element?.selectedMonths?.toString()}</p>
 				</div>
 				<div className='element__item'>
 					<p className='element__label'>Prorate</p>
@@ -91,25 +109,12 @@ export default function ElementDetails({ element }: { element: Element }) {
 				<div className='element__item'>
 					<p className='element__label'>Status</p>
 					<p className='element__text'>
-						{/* {element?.status === true ||
-						element?.status === 'active' ||
-						element?.status === 'Active'
-							? 'Active'
-							: element?.status === false ||
-								element?.status === 'inactive' ||
-								element?.status === 'Inactive' ||
-								element?.status === ''
-							? 'Inactive'
-							: 'Unknown'} */}
+						{element?.status == 'true' ? 'Active' : 'Inactive'}
 					</p>
 				</div>
 				<div className='element__item'>
-					<p className='element__label' style={{ display: 'none' }}>
-						Prorate
-					</p>
-					<p className='element__text' style={{ display: 'none' }}>
-						Yes
-					</p>
+					<p className='element__label'>Prorate</p>
+					<p className='element__text'>Yes</p>
 				</div>
 			</div>
 		</div>

@@ -2,9 +2,18 @@
 @import '../../styles/breakpoints';
 
 .elements {
-	margin: 44px 65px 44px 44px;
 	background-color: var.$white;
 	padding: 24px;
+
+	@include md-breakpoint {
+		margin: 4px 65px 44px 0;
+		padding: 24px;
+	}
+
+	@include sm-breakpoint {
+		margin: 4px 20px;
+		padding: 24px;
+	}
 
 	&__action {
 		background-color: var.$color-background;
@@ -20,10 +29,6 @@
 		gap: 16px;
 		align-items: center;
 	}
-
-	// &__header {
-	// 	margin-bottom: 24px;
-	// }
 }
 
 .page-title {
@@ -32,4 +37,18 @@
 	font-style: normal;
 	font-weight: 700;
 	line-height: normal;
+}
+
+.search-input {
+	max-width: 283.2px;
+	height: 40px;
+
+	.form-input {
+		height: 40px;
+		display: none;
+
+		@include sm-breakpoint {
+			display: inline-flex;
+		}
+	}
 }

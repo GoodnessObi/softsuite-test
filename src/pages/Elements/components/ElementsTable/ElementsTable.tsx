@@ -3,24 +3,30 @@ import Icons from '../../../../assets/images';
 import Pagination from '../../../../components/base/Pagination/Pagination';
 import { Element } from '../../../../types/apiResponseTypes';
 import './ElementsTable.scss';
-import moment from 'moment';
 import DropdownBtn from '../../../../components/base/DropdownBtn/DropdownBtn';
 import EmptyState from '../../../../components/base/Emptystate/EmptyState';
-import Spinner from '../../../../components/base/Spinner/Spinner';
+import useGetLookupValues from '../../../../hooks/useGetLookupValues';
+import { lookUpIds } from '../../../../lib/data';
+import { formatDateTime, getDataName } from '../../../../utils';
 
 export default function ElementsTable({
 	data,
 	setIsModalOpen,
-	isLoading,
 }: {
 	data?: Element[];
 	setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
-	isLoading: boolean;
 }) {
 	const [items, setCurrentItems] = useState<Element[]>();
 	const [itemOffset, setItemOffset] = useState(0);
 	const [pageCount, setPageCount] = useState(0);
 	const [itemsPerPage, setItemsPerPage] = useState(5);
+
+	const { data: classifications } = useGetLookupValues(
+		lookUpIds.elementClassification
+	);
+	const { data: categoriesData } = useGetLookupValues(
+		lookUpIds.elementCategory
+	);
 
 	useEffect(() => {
 		if (data) {
@@ -47,12 +53,9 @@ export default function ElementsTable({
 	}
 
 	return (
-		<div className='elements-table'>
+		<div className='table-container'>
 			<div className='mobile-header'>
-				<p>items</p>
-				<span role='button' className='open-filter'>
-					<img src={Icons['Filter']} alt='' />
-				</span>
+				<p>elements</p>
 			</div>
 
 			<table>
@@ -82,13 +85,13 @@ export default function ElementsTable({
 								<img src={Icons['Filter']} alt='' />
 							</span>
 						</th>
-						<th className='date'>
+						<th className='date hide-sm'>
 							Date and Time Modified{' '}
 							<span role='button' className='open-filter'>
 								<img src={Icons['Filter']} alt='' />
 							</span>
 						</th>
-						<th>
+						<th className='hide-sm'>
 							Modified By{' '}
 							<span role='button' className='open-filter'>
 								<img src={Icons['Filter']} alt='' />
@@ -97,34 +100,38 @@ export default function ElementsTable({
 						<th>Action</th>
 					</tr>
 				</thead>
-				{isLoading ? (
-					<Spinner />
-				) : (
-					<tbody>
-						{items?.map((item) => (
-							<tr key={item.id}>
-								<td data-name='name' className='itemname'>
-									{item.name}
-								</td>
-								<td data-name='category'>{item.categoryValueId}</td>
-								<td data-name='classification'>{item.classificationValueId}</td>
-								<td data-name='status' className=''>
-									<span className={`status-span ${item.status.toLowerCase()}`}>
-										{item.status}
-									</span>
-								</td>
-								<td className='date'>
-									{moment(item?.createdAt).format('MMMM Do YYYY, h:mm:ss a')}
-								</td>
-								<td data-name='organization'>{item.modifiedBy}</td>
 
-								<td data-name='action' className='action'>
-									<DropdownBtn item={item} setIsModalOpen={setIsModalOpen} />
-								</td>
-							</tr>
-						))}
-					</tbody>
-				)}
+				<tbody>
+					{items?.map((item) => (
+						<tr key={item.id}>
+							<td data-name='name' className='itemname'>
+								{item.name}
+							</td>
+							<td data-name='category'>
+								{getDataName(item.categoryValueId.toString(), categoriesData)}
+							</td>
+							<td data-name='classification'>
+								{getDataName(
+									item.classificationValueId.toString(),
+									classifications
+								)}
+							</td>
+							<td data-name='status' className='status'>
+								<span className={`status-span ${item.status.toLowerCase()}`}>
+									{item.status}
+								</span>
+							</td>
+							<td className='date hide-sm'>{formatDateTime(item.createdAt)}</td>
+							<td data-name='modifiedBy' className='hide-sm'>
+								{item.modifiedBy}
+							</td>
+
+							<td data-name='action' className='action'>
+								<DropdownBtn item={item} setIsModalOpen={setIsModalOpen} />
+							</td>
+						</tr>
+					))}
+				</tbody>
 			</table>
 
 			<Pagination

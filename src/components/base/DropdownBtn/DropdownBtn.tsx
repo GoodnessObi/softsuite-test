@@ -54,7 +54,7 @@ const DropdownBtn = ({
 			label: (
 				<span
 					role='button'
-					className=' danger-item'
+					className='dropdown-item delete'
 					onClick={() => {
 						deleteElement(`${item.id}`);
 					}}

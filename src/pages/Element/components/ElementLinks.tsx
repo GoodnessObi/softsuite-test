@@ -6,17 +6,24 @@ import { ElementLink } from '../../../types/apiResponseTypes';
 import ElementLinksTable from './ElementLinksTable';
 import CenterModal from '../../../components/base/Modal/CenterModal/CenterModal';
 import ELementLinkForm from './ElementLinkForm';
+import Spinner from '../../../components/base/Spinner/Spinner';
 
-export default function ElementLinks({ data }: { data: ElementLink[] }) {
+export default function ElementLinks({
+	data,
+	isLoading,
+}: {
+	data: ElementLink[];
+	isLoading: boolean;
+}) {
 	const [linkModalOpen, setLinkModalOpen] = useState(false);
 
 	return (
 		<div>
 			<div className='elements__header'>
-				<h1 className='page-title'>Elements</h1>
+				<h1 className='page-title'>Element Links</h1>
 				<div className='elements__action'>
 					<div className='elements__search'>
-						<div className='search'>
+						<div className='search-input'>
 							<div className='search-group'>
 								<input
 									type='search'
@@ -34,12 +41,14 @@ export default function ElementLinks({ data }: { data: ElementLink[] }) {
 						styleProp={{ padding: '16px' }}
 						onClick={() => setLinkModalOpen(true)}
 					>
-						Create Element Link
+						<span className='text-hide'>Create Element Link</span>
 						<img src={Icons['Plus']} alt='' />
 					</Button>
 				</div>
 
-				{data?.length === 0 ? (
+				{isLoading ? (
+					<Spinner size='medium' />
+				) : data?.length === 0 ? (
 					<EmptyState text='There are no element links to display' />
 				) : (
 					<ElementLinksTable data={data} setLinkModalOpen={setLinkModalOpen} />

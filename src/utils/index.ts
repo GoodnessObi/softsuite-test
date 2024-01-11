@@ -20,9 +20,16 @@ export const convertToDataItems = (
 	}));
 };
 
-export const formatDate = (value?: string) => {
+export const formatDate = (value?: string, format = 'YYYY-MM-DD') => {
 	if (!value) {
-		return moment(new Date()).format('YYYY-MM-DD');
+		return moment(new Date()).format(format);
 	}
-	return moment(value).format('YYYY-MM-DD');
+	return moment(value).format(format);
+};
+
+export const formatDateTime = (value?: string) => {
+	if (!value) {
+		return moment(new Date()).format('DD-MM-YYYY || h:mm a');
+	}
+	return moment(value).format('DD-MM-YYYY || h:mm a');
 };

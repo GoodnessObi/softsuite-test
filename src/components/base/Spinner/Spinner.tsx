@@ -1,12 +1,7 @@
-import Icons from '../../../assets/images';
-import './Spinner.scss';
-
-const Spinner = () => {
+export default function Spinner({ size }: { size?: 'small' | 'medium' }) {
 	return (
-		<div className='spinner'>
-			<img src={Icons['Spinner']} alt='SVG logo' />
+		<div className={`loader-container ${size}`}>
+			<div className='loader'></div>
 		</div>
 	);
-};
-
-export default Spinner;
+}

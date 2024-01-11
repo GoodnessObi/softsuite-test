@@ -38,12 +38,10 @@ export default function ELementsForm({
 
 		formData['effectiveStartDate'] = new Date(
 			formData.effectiveStartDate
-		).toISOString();
+		).toUTCString();
 		formData['effectiveEndDate'] = new Date(
 			formData.effectiveEndDate
-		).toISOString();
-
-		console.log('>>>>>>>>>>', formData);
+		).toUTCString();
 
 		try {
 			if (element) {

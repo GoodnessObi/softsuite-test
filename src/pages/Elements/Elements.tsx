@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import Icons from '../../assets/images';
 import Button from '../../components/base/Button/Button';
 import CenterModal from '../../components/base/Modal/CenterModal/CenterModal';
@@ -6,16 +6,15 @@ import './Elements.scss';
 import ElementsTable from './components/ElementsTable/ElementsTable';
 import ELementsForm from './components/ElementsForm';
 import { useGetElementsQuery } from '../../store/apiService';
+import Spinner from '../../components/base/Spinner/Spinner';
 
 export default function Elements() {
 	const [isModalOpen, setIsModalOpen] = useState(false);
-	const { data, isSuccess, isLoading } = useGetElementsQuery();
+	const { data, isLoading } = useGetElementsQuery();
 
-	useEffect(() => {
-		if (isSuccess) {
-			console.log(data, 'elennnnn');
-		}
-	}, [data, isSuccess]);
+	if (isLoading) {
+		return <Spinner />;
+	}
 
 	return (
 		<div className='elements'>
@@ -24,7 +23,7 @@ export default function Elements() {
 
 				<div className='elements__action'>
 					<div className='elements__search'>
-						<div className='search'>
+						<div className='search-input'>
 							<div className='search-group'>
 								<input
 									type='search'
@@ -43,20 +42,16 @@ export default function Elements() {
 					</div>
 
 					<Button
-						styleProp={{ padding: '16px' }}
+						styleProp={{ paddingLeft: '16px', paddingRight: '16px' }}
 						onClick={() => setIsModalOpen(true)}
 					>
-						Create Element
+						<span className='text-hide'>Create Element</span>
 						<img src={Icons['Plus']} alt='' />
 					</Button>
 				</div>
 			</div>
 
-			<ElementsTable
-				data={data}
-				setIsModalOpen={setIsModalOpen}
-				isLoading={isLoading}
-			/>
+			<ElementsTable data={data} setIsModalOpen={setIsModalOpen} />
 
 			{isModalOpen && (
 				<CenterModal>

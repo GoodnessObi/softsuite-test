@@ -1,0 +1,241 @@
+@use './variables' as var;
+@import './breakpoints';
+
+.table-container {
+	position: relative;
+	@include md-breakpoint {
+		background: #ffffff;
+	}
+
+	.mobile-header {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		font-weight: 600;
+		font-size: 12px;
+		line-height: 14px;
+		text-transform: capitalize;
+		color: #545f7d;
+		text-align: left;
+		margin-bottom: 8px;
+		background: #ffffff;
+		border: 1px solid rgba(33, 63, 125, 0.06);
+		box-shadow: 3px 5px 20px rgba(0, 0, 0, 0.04);
+		border-radius: 4px;
+		padding: 16px;
+
+		@include md-breakpoint {
+			display: none;
+		}
+	}
+
+	table {
+		width: 100%;
+		border-spacing: 0;
+		font-size: 14px;
+		font-style: normal;
+		font-weight: 400;
+		line-height: normal;
+	}
+
+	thead {
+		display: none;
+
+		@include md-breakpoint {
+			display: table-header-group;
+			th {
+				background-color: var.$color-primary;
+				font-size: 14px;
+				font-style: normal;
+				font-weight: 500;
+				line-height: normal;
+				color: var.$white;
+				padding-top: 11px;
+				padding-bottom: 11px;
+				text-align: left;
+
+				&:first-child {
+					padding-left: 24px;
+				}
+
+				&:last-child {
+					padding-right: 24px;
+				}
+
+				img {
+					display: inline;
+					// margin-left: 10px;
+				}
+
+				&.hide-sm {
+					display: none;
+
+					@include lg-breakpoint {
+						display: table-cell;
+					}
+				}
+			}
+		}
+	}
+
+	tbody {
+		display: grid;
+		grid-template-columns: 1fr;
+		column-gap: 16px;
+		row-gap: 16px;
+		background-color: var.$color-background;
+
+		@include sm-breakpoint {
+			grid-template-columns: repeat(2, 1fr);
+		}
+
+		@include md-breakpoint {
+			display: table-row-group;
+			background-color: inherit;
+		}
+
+		tr {
+			display: flex;
+			flex-direction: column;
+			position: relative;
+			background: #ffffff;
+			border: 1px solid #cde1e3;
+			border-radius: 4px;
+			padding: 16px;
+
+			@include md-breakpoint {
+				display: table-row;
+				box-shadow: none;
+				border-radius: 0;
+			}
+		}
+
+		td {
+			display: block;
+			color: var.$color-primary;
+			margin-bottom: 10px;
+			word-break: break-all;
+			font-size: 14px;
+			font-style: normal;
+			font-weight: 400;
+
+			a {
+				text-decoration: none;
+				font-weight: 400;
+				font-size: 14px;
+				line-height: 16px;
+				color: var.$color-primary;
+			}
+
+			@include md-breakpoint {
+				display: table-cell;
+				border-bottom: 1px solid #cde1e3;
+				padding-top: 11px;
+				padding-bottom: 11px;
+
+				&:first-child {
+					padding-left: 24px;
+				}
+
+				&:last-child {
+					padding-right: 24px;
+				}
+			}
+
+			&.itemname {
+				order: -1;
+
+				@include md-breakpoint {
+					order: initial;
+				}
+			}
+
+			&.status {
+				display: none;
+
+				@include md-breakpoint {
+					display: table-cell;
+				}
+			}
+
+			&.hide-sm {
+				display: none;
+
+				@include lg-breakpoint {
+					display: table-cell;
+				}
+			}
+
+			.status-span {
+				padding: 6px 8px;
+				border-radius: 40px;
+				font-size: 12px;
+				font-style: normal;
+				font-weight: 500;
+				line-height: normal;
+				text-align: center;
+				text-transform: capitalize;
+				min-width: 70px;
+
+				&.active,
+				&.true {
+					background: #f4faf7;
+					color: var.$color-secondary;
+				}
+
+				&.inactive,
+				&.false {
+					background: rgba(224, 84, 83, 0.05);
+					color: var.$color-error;
+				}
+
+				&.mobile {
+					display: inline-block;
+					margin-left: 20px;
+					text-transform: capitalize;
+					@include md-breakpoint {
+						display: none;
+					}
+				}
+			}
+
+			&.view-details {
+				position: absolute;
+				bottom: 10px;
+				right: 20px;
+				color: #4baa79;
+				font-size: 14px;
+				font-style: normal;
+				font-weight: 500;
+				line-height: normal;
+				text-decoration-line: underline;
+				cursor: pointer;
+
+				@include md-breakpoint {
+					position: relative;
+					display: table-cell;
+					bottom: unset;
+					right: unset;
+				}
+			}
+
+			&.action {
+				position: absolute;
+				top: 10px;
+				right: 20px;
+
+				@include md-breakpoint {
+					position: relative;
+					display: table-cell;
+					top: unset;
+					right: unset;
+				}
+
+				.btn-group {
+					display: inline-flex;
+					gap: 8px;
+				}
+			}
+		}
+	}
+}

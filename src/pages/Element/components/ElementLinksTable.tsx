@@ -1,11 +1,32 @@
 import { useEffect, useState } from 'react';
 import Icons from '../../../assets/images';
-// import Button from '../../../components/base/Button/Button';
 import Pagination from '../../../components/base/Pagination/Pagination';
 import { ElementLink } from '../../../types/apiResponseTypes';
 import { useAppDispatch } from '../../../store/hook';
 import { useDeleteElementLinkMutation } from '../../../store/apiService';
 import { setCurrentElementLink } from '../../../store/elementLinksSlice';
+import useGetSuborganizations from '../../../hooks/useGetSuborganization';
+import useGetLookupValues from '../../../hooks/useGetLookupValues';
+import { lookUpIds } from '../../../lib/data';
+import useGetDepartments from '../../../hooks/useGetDepartments';
+import { getDataName } from '../../../utils';
+
+const DepartmentName = ({
+	orgId,
+	deptId,
+}: {
+	orgId: string;
+	deptId: string;
+}) => {
+	const { data: departments } = useGetDepartments({
+		orgId,
+		departmentId: deptId,
+	});
+
+	const name = departments ? getDataName(deptId.toString(), departments) : '';
+
+	return <>{name}</>;
+};
 
 export default function ElementLinksTable({
 	data,
@@ -20,6 +41,11 @@ export default function ElementLinksTable({
 	const [itemsPerPage, setItemsPerPage] = useState(5);
 	const dispatch = useAppDispatch();
 	const [deleteElementLink] = useDeleteElementLinkMutation();
+	const { data: subOrganizations } = useGetSuborganizations();
+
+	const { data: employeeCategories } = useGetLookupValues(
+		lookUpIds.employeeCategory
+	);
 
 	useEffect(() => {
 		if (data) {
@@ -36,12 +62,9 @@ export default function ElementLinksTable({
 		}
 	};
 	return (
-		<div className='elements-table'>
+		<div className='table-container'>
 			<div className='mobile-header'>
-				<p>items</p>
-				<span role='button' className='open-filter'>
-					<img src={Icons['Filter']} alt='' />
-				</span>
+				<p>Element Links</p>
 			</div>
 
 			<table>
@@ -53,7 +76,7 @@ export default function ElementLinksTable({
 								<img src={Icons['Filter']} alt='' />
 							</span>
 						</th>
-						<th>
+						<th className='hide-sm'>
 							Sub-Organization{' '}
 							<span role='button' className='open-filter'>
 								<img src={Icons['Filter']} alt='' />
@@ -72,7 +95,7 @@ export default function ElementLinksTable({
 							</span>
 						</th>
 
-						<th>
+						<th className='hide-sm'>
 							Amount{' '}
 							<span role='button' className='open-filter'>
 								<img src={Icons['Filter']} alt='' />
@@ -88,36 +111,52 @@ export default function ElementLinksTable({
 							<td data-name='name' className='itemname'>
 								{item.name}
 							</td>
-							<td data-name='sub-organization'>{item.suborganizationId}</td>
-							<td data-name='department'>{item.departmentId}</td>
-							<td data-name='element-category'>{item.employeeCategoryId}</td>
-							<td data-name='amount'>{`NGN ${item.amount}`}y</td>
-							<td data-name='view-details'>
+							<td data-name='sub-organization' className='hide-sm'>
+								{getDataName(
+									item.suborganizationId.toString(),
+									subOrganizations
+								)}
+							</td>
+							<td data-name='department'>
+								<DepartmentName
+									orgId={item.suborganizationId.toString()}
+									deptId={item.departmentId.toString()}
+								/>
+							</td>
+							<td data-name='element-category'>
+								{getDataName(
+									item.employeeCategoryValueId.toString(),
+									employeeCategories
+								)}
+							</td>
+							<td data-name='amount' className='hide-sm'>
+								{`NGN ${item.amount}`}y
+							</td>
+							<td data-name='view-details' className='view-details'>
 								<span>View Details</span>
 							</td>
 
 							<td data-name='action' className='action'>
-								<span
-									onClick={() => {
-										dispatch(setCurrentElementLink(item));
-										setLinkModalOpen(true);
-										// dispatch(setCurrentEditElement(user));
-										// setFormType('EDIT');
-										// setShowModal(true);
-									}}
-								>
-									<img src={Icons['Edit']} alt='' />
-								</span>
+								<span className='btn-group'>
+									<span
+										onClick={() => {
+											dispatch(setCurrentElementLink(item));
+											setLinkModalOpen(true);
+										}}
+									>
+										<img src={Icons['Edit']} alt='' />
+									</span>
 
-								<span
-									onClick={() => {
-										deleteElementLink({
-											id: `${item.id}`,
-											elementId: `${item.elementId}`,
-										});
-									}}
-								>
-									<img src={Icons['Delete']} alt='' />
+									<span
+										onClick={() => {
+											deleteElementLink({
+												id: `${item.id}`,
+												elementId: `${item.elementId}`,
+											});
+										}}
+									>
+										<img src={Icons['Delete']} alt='' />
+									</span>
 								</span>
 							</td>
 						</tr>
