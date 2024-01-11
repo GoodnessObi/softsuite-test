@@ -67,6 +67,9 @@ export const apiService = createApi({
 		}),
 		getElementLink: builder.query<ElementLink, ElementLinkIds>({
 			query: (value) => `elements/${value.elementId}/elementlinks/${value.id}`,
+			transformResponse: (response: { data: ElementLink }) => {
+				return response.data;
+			},
 		}),
 		addElementLink: builder.mutation<ElementLink, ElementLink>({
 			query: (data) => ({

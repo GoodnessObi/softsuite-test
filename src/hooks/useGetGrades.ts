@@ -10,5 +10,5 @@ export default function useGetGrades(gradeId?: string) {
 		arr.push({ id: d.id, name: d.name });
 	});
 	const gradeName = gradeId ? getDataName(gradeId, arr) : '';
-	return { gradeName, data };
+	return { gradeName, data: arr };
 }

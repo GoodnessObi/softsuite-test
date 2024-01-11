@@ -14,8 +14,6 @@ export default function ElementDetails({ element }: { element: Element }) {
 	);
 	const { data: payruns } = useGetLookupValues(lookUpIds.payRun);
 
-	console.log('eeee', element);
-
 	return (
 		<div>
 			<div className='element__back'>

@@ -1,0 +1,40 @@
+@import '../../../styles/breakpoints';
+.side__modal {
+	background-color: rgba(0, 0, 0, 0.4);
+	position: fixed;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	top: 100px;
+	z-index: 10000;
+	display: flex;
+	justify-content: end;
+
+	&-body {
+		background-color: white;
+		width: 85%;
+		border-radius: 8px;
+
+		@include sm-breakpoint {
+			width: 60%;
+		}
+
+		@include md-breakpoint {
+			padding: 8px;
+			width: 40%;
+		}
+	}
+
+	.page-title {
+		margin: 20px 0;
+
+		@include md-breakpoint {
+			margin: 42px 0;
+		}
+	}
+
+	.close-btn {
+		background: transparent;
+		border: 0;
+	}
+}
