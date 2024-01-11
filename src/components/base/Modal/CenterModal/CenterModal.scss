@@ -1,6 +1,10 @@
+@use '../../../../styles/variables' as var;
+@import '../../../../styles/breakpoints';
+
 .center__modal {
 	background-color: rgba(0, 0, 0, 0.4);
 	position: fixed;
+	overflow-y: scroll;
 	left: 0;
 	right: 0;
 	bottom: 0;
@@ -17,10 +21,15 @@
 
 	&-body {
 		background-color: white;
-		width: 745px;
-		padding: 24px 40px;
-		// text-align: center;
+		width: 90%;
+		padding: 20px;
 		border-radius: 8px;
+		margin: 30px;
+
+		@include md-breakpoint {
+			padding: 24px 40px;
+			width: 745px;
+		}
 	}
 }
 

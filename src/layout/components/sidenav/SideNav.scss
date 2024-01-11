@@ -13,6 +13,8 @@
 	transition-property: all;
 	transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
 	transition-duration: 150ms;
+	padding-bottom: 58px;
+
 	&::-webkit-scrollbar {
 		width: 2px;
 	}
@@ -20,14 +22,14 @@
 		background: #f1f1f1;
 	}
 	&::-webkit-scrollbar-thumb {
-		background: var.$color-primary;
+		background: var.$color-primary-60;
 	}
 	&::-webkit-scrollbar-thumb:hover {
-		background: var.$color-primary;
+		background: var.$color-primary-60;
 	}
-	// &::-webkit-scrollbar {
-	// 	display: none;
-	// }
+	&::-webkit-scrollbar {
+		display: none;
+	}
 
 	@include md-breakpoint {
 		transform: translateX(0);
