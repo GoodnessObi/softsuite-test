@@ -1,18 +1,18 @@
 import { useParams } from 'react-router-dom';
-import { useGetElementLinkQuery } from '../../../../store/apiService';
-import { useAppSelector } from '../../../../store/hook';
-import Icons from '../../../../assets/images';
-import Spinner from '../../../../components/base/Spinner/Spinner';
+import { useGetElementLinkQuery } from '../../../store/apiService';
+import { useAppSelector } from '../../../store/hook';
+import Icons from '../../../assets/images';
+import Spinner from '../../../components/base/Spinner/Spinner';
 import { useDispatch } from 'react-redux';
-import { closeDetailsModal } from '../../../../store/elementLinksSlice';
-import '../../Element.scss';
-import useGetLookupValues from '../../../../hooks/useGetLookupValues';
-import { lookUpIds } from '../../../../lib/data';
-import useGetSuborganizations from '../../../../hooks/useGetSuborganization';
-import { formatDate, getDataName } from '../../../../utils';
-import useGetDepartments from '../../../../hooks/useGetDepartments';
-import useGetGrades from '../../../../hooks/useGetGrades';
-import useGetGradeSteps from '../../../../hooks/useGetGradeSteps';
+import { closeDetailsModal } from '../../../store/elementLinksSlice';
+import '../Element.scss';
+import useGetLookupValues from '../../../hooks/useGetLookupValues';
+import { lookUpIds } from '../../../lib/data';
+import useGetSuborganizations from '../../../hooks/useGetSuborganization';
+import { formatDate, getDataName } from '../../../utils';
+import useGetDepartments from '../../../hooks/useGetDepartments';
+import useGetGrades from '../../../hooks/useGetGrades';
+import useGetGradeSteps from '../../../hooks/useGetGradeSteps';
 
 const ElementLinkDetails = () => {
 	const { id } = useParams() as { id: string };

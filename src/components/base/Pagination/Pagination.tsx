@@ -27,8 +27,8 @@ export default function Pagination({
 	return (
 		<div className='pagination_wrapper'>
 			<div className='select-box'>
-				<span>
-					Showing out
+				<p>
+					Showing
 					<span>
 						<label htmlFor='pageitems' hidden></label>
 						<select
@@ -39,14 +39,18 @@ export default function Pagination({
 								selectPageCount(e)
 							}
 						>
-							<option value={itemsPerPage}>{itemsPerPage}</option>
-							<option value='20'>10</option>
-							<option value='50'>20</option>
-							<option value='100'>50</option>
+							<option
+								value={totalCount < itemsPerPage ? totalCount : itemsPerPage}
+							>
+								{totalCount < itemsPerPage ? totalCount : itemsPerPage}
+							</option>
+							<option value='10'>10</option>
+							<option value='20'>20</option>
+							<option value='50'>50</option>
 						</select>
 					</span>
 					out of {totalCount}
-				</span>
+				</p>
 			</div>
 			<ReactPaginate
 				nextLabel='>'

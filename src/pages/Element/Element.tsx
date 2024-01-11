@@ -8,7 +8,7 @@ import ElementLinks from './components/ElementLinks';
 import './Element.scss';
 import Spinner from '../../components/base/Spinner/Spinner';
 import SideModal from '../../components/base/sideModal/SideModal';
-import ElementLinkDetails from './components/ElementLinkDetails/ElementLinkDetails';
+import ElementLinkDetails from './components/ElementLinkDetails';
 import { useAppSelector } from '../../store/hook';
 
 export default function ElementPage() {

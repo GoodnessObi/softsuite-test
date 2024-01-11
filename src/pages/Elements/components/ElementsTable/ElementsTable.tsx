@@ -19,7 +19,7 @@ export default function ElementsTable({
 	const [items, setCurrentItems] = useState<Element[]>();
 	const [itemOffset, setItemOffset] = useState(0);
 	const [pageCount, setPageCount] = useState(0);
-	const [itemsPerPage, setItemsPerPage] = useState(5);
+	const [itemsPerPage, setItemsPerPage] = useState(10);
 
 	const { data: classifications } = useGetLookupValues(
 		lookUpIds.elementClassification
