@@ -3,10 +3,14 @@ import { ElementLink } from '../types/apiResponseTypes';
 
 type elementLinksState = {
 	currentElementLink: null | ElementLink;
+	currentDetailId: null | ElementLink['id'];
+	isDetailsModalOpen: boolean;
 };
 
 const initialState: elementLinksState = {
 	currentElementLink: null,
+	currentDetailId: null,
+	isDetailsModalOpen: false,
 };
 
 const elementLinksSlice = createSlice({
@@ -19,9 +23,29 @@ const elementLinksSlice = createSlice({
 		clearCurrentElementLink: (state) => {
 			state.currentElementLink = null;
 		},
+		setCurrentDetailId: (state, action: PayloadAction<ElementLink['id']>) => {
+			state.currentDetailId = action.payload;
+		},
+		clearCurrentDetailId: (state) => {
+			state.currentDetailId = null;
+		},
+		openDetailsModal: (state, action: PayloadAction<ElementLink['id']>) => {
+			state.isDetailsModalOpen = true;
+			state.currentDetailId = action.payload;
+		},
+		closeDetailsModal: (state) => {
+			state.isDetailsModalOpen = false;
+			state.currentDetailId = null;
+		},
 	},
 });
 
-export const { setCurrentElementLink, clearCurrentElementLink } =
-	elementLinksSlice.actions;
+export const {
+	setCurrentElementLink,
+	clearCurrentElementLink,
+	setCurrentDetailId,
+	clearCurrentDetailId,
+	openDetailsModal,
+	closeDetailsModal,
+} = elementLinksSlice.actions;
 export default elementLinksSlice.reducer;

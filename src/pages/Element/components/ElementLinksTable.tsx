@@ -4,7 +4,10 @@ import Pagination from '../../../components/base/Pagination/Pagination';
 import { ElementLink } from '../../../types/apiResponseTypes';
 import { useAppDispatch } from '../../../store/hook';
 import { useDeleteElementLinkMutation } from '../../../store/apiService';
-import { setCurrentElementLink } from '../../../store/elementLinksSlice';
+import {
+	openDetailsModal,
+	setCurrentElementLink,
+} from '../../../store/elementLinksSlice';
 import useGetSuborganizations from '../../../hooks/useGetSuborganization';
 import useGetLookupValues from '../../../hooks/useGetLookupValues';
 import { lookUpIds } from '../../../lib/data';
@@ -133,7 +136,13 @@ export default function ElementLinksTable({
 								{`NGN ${item.amount}`}y
 							</td>
 							<td data-name='view-details' className='view-details'>
-								<span>View Details</span>
+								<span
+									onClick={() => {
+										dispatch(openDetailsModal(item.id));
+									}}
+								>
+									View Details
+								</span>
 							</td>
 
 							<td data-name='action' className='action'>

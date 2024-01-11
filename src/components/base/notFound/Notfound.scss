@@ -1,0 +1,21 @@
+.notFound {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 50vh;
+  &__body {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    p {
+      color: #2d416f;
+      font-size: 16px;
+      font-weight: 600;
+      text-align: center;
+    }
+    a {
+      text-align: center;
+      color: #2d416f;
+    }
+  }
+}

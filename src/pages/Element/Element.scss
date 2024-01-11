@@ -17,6 +17,10 @@
 		@include sm-breakpoint {
 			grid-template-columns: repeat(2, 1fr);
 		}
+
+		&--link {
+			grid-template-rows: repeat(8, 1fr);
+		}
 	}
 
 	&__item {
